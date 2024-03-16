@@ -1,0 +1,45 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - version
+
+permissions:
+  id-token: write
+
+defaults:
+  run:
+    shell: bash -ieo pipefail {0}
+
+env:
+  TWINE_NON_INTERACTIVE: "true"
+
+jobs:
+  release:
+    name: ${{ matrix.packages.package }} ${{ matrix.packages.os }}
+    runs-on: ${{ matrix.packages.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        packages:
+          - {os: "ubuntu-latest", package: "sdist"}
+          - {os: "ubuntu-latest", package: "wheel"}
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup
+        run: scripts/setup
+
+      - name: package-${{ matrix.packages.package }}
+        run: scripts/package-${{ matrix.packages.package }}
+
+      - name: publish-${{ matrix.packages.package }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true

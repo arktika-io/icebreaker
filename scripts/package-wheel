@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+source .venv/bin/activate
+rm -rf dist
+cp version src/icebreaker
+python -m build --wheel
+rm src/icebreaker/version
