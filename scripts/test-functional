@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+source .venv/bin/activate
+pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp .test_artifacts --asyncio-mode auto tests/functional
