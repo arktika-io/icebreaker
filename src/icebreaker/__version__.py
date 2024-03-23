@@ -1,1 +1,3 @@
-__version__: str = "0.1.0"
+from icebreaker.versioning import VersionFileBased
+
+__version__: str = VersionFileBased().resolve_version()
