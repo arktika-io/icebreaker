@@ -3,6 +3,7 @@ import sys
 from typing import NoReturn
 
 from icebreaker._cli import CLI
+from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
 
@@ -17,7 +18,7 @@ def main() -> NoReturn:
         error_printer=error_printer,
         reader=reader,
     )
-    exit_code: int = cli()
+    exit_code: ExitCode = cli()
     sys.exit(exit_code)
 
 

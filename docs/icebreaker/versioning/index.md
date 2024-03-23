@@ -1,5 +1,4 @@
 # Versioning
-
 The [versioning](../../../src/icebreaker/versioning) package implements project version discovery mechanisms facilitating standardized language-neutral versioning across projects.
 
 ## Version File Based

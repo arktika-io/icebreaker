@@ -24,6 +24,10 @@ dev = [
     "pytest-asyncio==0.*",
 ]
 
+cli = [
+    "ruff==0.*"
+]
+
 [project.scripts]
 icebreaker = "icebreaker.__main__:main"
 
@@ -34,7 +38,10 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-icebreaker = ["py.typed", "version"]
+icebreaker = [
+    "py.typed",
+    "version"
+]
 
 [tool.setuptools.dynamic]
 version = {file = "version"}
