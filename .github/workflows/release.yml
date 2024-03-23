@@ -26,12 +26,18 @@ jobs:
 
       matrix:
         packages:
-          - {os: "ubuntu-latest", package: "sdist"}
-          - {os: "ubuntu-latest", package: "wheel"}
+          - {os: "ubuntu-latest", python-version: "3.12", package: "sdist"}
+          - {os: "ubuntu-latest", python-version: "3.12", package: "wheel"}
 
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
+
+      - name: install python${{ matrix.python-version }}
+        id: install-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
       - name: setup
         run: scripts/setup
