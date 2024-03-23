@@ -2,11 +2,13 @@ from argparse import ArgumentParser
 from argparse import Namespace
 from collections.abc import Callable
 import functools
+from pathlib import Path
 import traceback
 from typing import Any
 from typing import Self
 from typing import TypeAlias
 
+from icebreaker._cli.commands.fmt import Fmt
 from icebreaker._cli.commands.version import Version
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
@@ -57,6 +59,11 @@ class CLI:
         )
         subparsers: Any = argument_parser.add_subparsers(title="Commands", dest="command")
 
+        # Add "fmt" command
+        fmt_parser: ArgumentParser = subparsers.add_parser(name="fmt", description="Format the codebase.")
+        fmt_parser.add_argument("--check", action="store_true", default=False)
+        fmt_parser.add_argument("target", metavar="TARGET", nargs="?", default=".", type=Path)
+
         # Add "version" command
         subparsers.add_parser(name="version", description="Show version number and quit.")
 
@@ -69,4 +76,6 @@ class CLI:
         handler: Handler | None = None
         if command == "version":
             handler = functools.partial(Version(printer=self.printer).__call__, **arguments)
+        elif command == "fmt":
+            handler = functools.partial(Fmt(printer=self.printer, error_printer=self.error_printer), **arguments)
         return handler
