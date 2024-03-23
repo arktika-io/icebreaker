@@ -33,11 +33,11 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
-      - name: install python${{ matrix.python-version }}
+      - name: install python${{ matrix.packages.python-version }}
         id: install-python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.packages.python-version }}
 
       - name: setup
         run: scripts/setup
