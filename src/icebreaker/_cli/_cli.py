@@ -10,6 +10,7 @@ from typing import TypeAlias
 
 from icebreaker._cli.commands.fmt import Fmt
 from icebreaker._cli.commands.version import Version
+from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
 
@@ -33,23 +34,22 @@ class CLI:
         self.error_printer = error_printer
         self.reader = reader
 
-    def __call__(self: Self) -> int:
+    def __call__(self: Self) -> ExitCode:
         command_and_arguments: tuple[Command, Arguments] = self._get_called_command_and_arguments()
         command: Command = command_and_arguments[0]
         arguments: Arguments = command_and_arguments[1]
         handler: Handler | None = self._get_handler(command=command, arguments=arguments)
 
-        exit_code: int
         if handler is None:
             self.error_printer(f"Unknown command: {command}\n")
-            exit_code = 1
-        else:
-            try:
-                handler()
-                exit_code = 0
-            except BaseException:
-                self.error_printer(traceback.format_exc())
-                exit_code = 1
+            return ExitCode(1)
+
+        try:
+            handler()
+            exit_code = ExitCode(0)
+        except BaseException:
+            self.error_printer(traceback.format_exc())
+            exit_code = ExitCode(1)
 
         return exit_code
 

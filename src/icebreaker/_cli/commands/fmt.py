@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from typing import Self
 
+from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 
 
@@ -22,28 +23,36 @@ class Fmt:
         self: Self,
         target: Path,
         check: bool,
-    ) -> None:
+    ) -> ExitCode:
         dependencies_installed: bool = all([shutil.which("ruff")])
         if not dependencies_installed:
             self.error_printer(
                 "CLI dependencies are not installed. ",
                 'Please run "pip install icebreaker[cli]" to unlock this functionality.\n',
             )
-            raise RuntimeError()
+            return ExitCode(1)
 
         if check:
             return self._check(target=target)
         else:
             return self._run(target=target)
 
-    def _check(self: Self, target: Path) -> None:
-        subprocess.run(
-            ["ruff", "check", str(target)],
-            check=True,
-        )
+    def _check(self: Self, target: Path) -> ExitCode:
+        try:
+            subprocess.run(
+                ["ruff", "check", str(target)],
+                check=True,
+            )
+        except subprocess.CalledProcessError:
+            return ExitCode(1)
+        return ExitCode(0)
 
-    def _run(self: Self, target: Path) -> None:
-        subprocess.run(
-            ["ruff", "format", str(target)],
-            check=True,
-        )
+    def _run(self: Self, target: Path) -> ExitCode:
+        try:
+            subprocess.run(
+                ["ruff", "format", str(target)],
+                check=True,
+            )
+        except subprocess.CalledProcessError:
+            return ExitCode(1)
+        return ExitCode(0)
