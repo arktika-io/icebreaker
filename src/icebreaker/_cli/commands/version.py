@@ -5,6 +5,8 @@ from icebreaker._cli.interfaces import Printer
 
 
 class Version:
+    printer: Printer
+
     def __init__(
         self: Self,
         printer: Printer,
