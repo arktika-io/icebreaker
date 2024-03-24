@@ -16,7 +16,7 @@ from icebreaker._cli.interfaces import Reader
 
 Command: TypeAlias = str
 Arguments: TypeAlias = dict[str, Any]
-Handler: TypeAlias = Callable[[], None]
+Handler: TypeAlias = Callable[[], ExitCode]
 
 
 class CLI:
@@ -45,8 +45,7 @@ class CLI:
             return ExitCode(1)
 
         try:
-            handler()
-            exit_code = ExitCode(0)
+            exit_code = handler()
         except BaseException:
             self.error_printer(traceback.format_exc())
             exit_code = ExitCode(1)
