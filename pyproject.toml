@@ -28,6 +28,10 @@ cli = [
     "ruff==0.*"
 ]
 
+testing = [
+    "ruff==0.*"
+]
+
 [project.scripts]
 icebreaker = "icebreaker.__main__:main"
 
