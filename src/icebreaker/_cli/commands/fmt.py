@@ -3,7 +3,11 @@ from typing import Self
 
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
-from icebreaker._internal.interfaces import Formatter
+from icebreaker._internal.code_quality import Formatter
+from icebreaker._internal.code_quality import CheckReport
+from icebreaker._internal.code_quality import FormatReport
+from icebreaker._internal.code_quality import Success
+from icebreaker._internal.code_quality import Report
 
 
 class Fmt:
@@ -34,9 +38,13 @@ class Fmt:
             return ExitCode(1)
 
         if check:
-            success, report = self.formatter.check(target=target)
+            check_report: CheckReport = self.formatter.check(target=target)
+            success: Success = check_report[0]
+            report: Report = check_report[1]
         else:
-            success, report = self.formatter.format(target=target)
+            format_report: FormatReport = self.formatter.format(target=target)
+            success: Success = format_report[0]
+            report: Report = format_report[1]
 
         if not success:
             self.error_printer(report)

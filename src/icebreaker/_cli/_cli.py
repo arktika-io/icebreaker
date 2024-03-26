@@ -13,7 +13,7 @@ from icebreaker._cli.commands.version import Version
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
-from icebreaker._internal.interfaces import Formatter
+from icebreaker._internal.code_quality import Formatter
 
 Command: TypeAlias = str
 Arguments: TypeAlias = dict[str, Any]

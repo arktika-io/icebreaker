@@ -3,12 +3,9 @@ import shutil
 import subprocess
 from typing import Final
 from typing import Self
-from typing import TypeAlias
 
-Success: TypeAlias = bool
-Report: TypeAlias = str
-CheckReport: TypeAlias = tuple[Success, Report]
-FormatReport: TypeAlias = tuple[Success, Report]
+from icebreaker._internal.code_quality._formatter import CheckReport
+from icebreaker._internal.code_quality._formatter import FormatReport
 
 
 class RuffFormatter:
