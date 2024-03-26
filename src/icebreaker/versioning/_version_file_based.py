@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from types import ModuleType
 from typing import Self
+from types import FrameType
 
 
 class VersionFileBased:
@@ -65,7 +66,7 @@ class VersionFileBased:
         # 1st position will be self.resolve_version calling this function
         # 2nd position will be the function calling us
         calling_module_frame: FrameInfo = stack[2]
-        calling_module_name: str = calling_module_frame[0]
+        calling_module_name: FrameType = calling_module_frame[0]
         calling_module: ModuleType | None = inspect.getmodule(calling_module_name)
         if not calling_module or not calling_module.__file__:
             raise ModuleNotFoundError("Could not discover calling module.")

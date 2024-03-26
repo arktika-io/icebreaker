@@ -29,7 +29,8 @@ cli = [
 ]
 
 testing = [
-    "ruff==0.*"
+    "ruff==0.*",
+    "mypy==1.*"
 ]
 
 [project.scripts]
