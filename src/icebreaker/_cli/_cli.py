@@ -13,6 +13,7 @@ from icebreaker._cli.commands.version import Version
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
+from icebreaker._internal.interfaces import Formatter
 
 Command: TypeAlias = str
 Arguments: TypeAlias = dict[str, Any]
@@ -23,16 +24,19 @@ class CLI:
     printer: Printer
     error_printer: Printer
     reader: Reader
+    formatter: Formatter
 
     def __init__(
         self: Self,
         printer: Printer,
         error_printer: Printer,
         reader: Reader,
+        formatter: Formatter,
     ) -> None:
         self.printer = printer
         self.error_printer = error_printer
         self.reader = reader
+        self.formatter = formatter
 
     def __call__(self: Self) -> ExitCode:
         command_and_arguments: tuple[Command, Arguments] = self._get_called_command_and_arguments()
@@ -76,5 +80,7 @@ class CLI:
         if command == "version":
             handler = functools.partial(Version(printer=self.printer).__call__, **arguments)
         elif command == "fmt":
-            handler = functools.partial(Fmt(printer=self.printer, error_printer=self.error_printer), **arguments)
+            handler = functools.partial(
+                Fmt(printer=self.printer, error_printer=self.error_printer, formatter=self.formatter), **arguments
+            )
         return handler

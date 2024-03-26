@@ -6,17 +6,20 @@ from icebreaker._cli import CLI
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
+from icebreaker._internal.code_quality import RuffFormatter
 
 
 def main() -> NoReturn:
     printer: Printer = functools.partial(print, sep=" ", end="", file=sys.stdout)
     error_printer: Printer = functools.partial(print, sep=" ", end="", file=sys.stderr)
     reader: Reader = sys.stdin
+    formatter: RuffFormatter = RuffFormatter()
 
     cli: CLI = CLI(
         printer=printer,
         error_printer=error_printer,
         reader=reader,
+        formatter=formatter,
     )
     exit_code: ExitCode = cli()
     sys.exit(exit_code)
