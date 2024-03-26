@@ -1,8 +1,8 @@
 from typing import Self
 from pathlib import Path
 
-from icebreaker._internal.code_quality import RuffFormatter as RuffFormatter
-from icebreaker._internal.code_quality import Formatter as Formatter
+from icebreaker._internal.code_quality import RuffFormatter
+from icebreaker._internal.code_quality import Formatter
 
 
 class TestCodeFormatting:
@@ -13,7 +13,7 @@ class TestCodeFormatting:
 Please install testing dependencies using "pip install arktika-icebreaker[testing]"."""
 
         code_is_formatted, report = self.formatter.check(target=Path.cwd())
-        assert code_is_formatted, f"""Formatting issues found. 
+        assert code_is_formatted, f"""Formatting issues detected. 
 
 {report}
 

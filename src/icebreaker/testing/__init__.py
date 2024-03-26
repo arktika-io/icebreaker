@@ -1,1 +1,2 @@
 from icebreaker.testing._test_code_formatting import TestCodeFormatting as TestCodeFormatting
+from icebreaker.testing._test_code_typing import TestCodeTyping as TestCodeTyping
