@@ -1,5 +1,6 @@
 from typing import Self
 from typing import TypeAlias
+from typing import Protocol
 from pathlib import Path
 
 Success: TypeAlias = bool
@@ -8,7 +9,7 @@ CheckReport: TypeAlias = tuple[Success, Report]
 FormatReport: TypeAlias = tuple[Success, Report]
 
 
-class Formatter:
+class Formatter(Protocol):
     dependencies_are_installed: bool
 
     def format(
