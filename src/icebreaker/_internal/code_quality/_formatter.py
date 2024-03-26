@@ -10,7 +10,8 @@ FormatReport: TypeAlias = tuple[Success, Report]
 
 
 class Formatter(Protocol):
-    dependencies_are_installed: bool
+    @property
+    def dependencies_are_installed(self: Self) -> bool: ...
 
     def format(
         self: Self,

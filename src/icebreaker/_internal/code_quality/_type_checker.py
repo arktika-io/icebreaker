@@ -9,7 +9,8 @@ CheckReport: TypeAlias = tuple[Success, Report]
 
 
 class TypeChecker(Protocol):
-    dependencies_are_installed: bool
+    @property
+    def dependencies_are_installed(self: Self) -> bool: ...
 
     def check(
         self: Self,
