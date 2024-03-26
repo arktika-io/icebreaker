@@ -18,7 +18,7 @@ class TestCLIVersion:
     def test_returns_expected_status_code(self: Self) -> None:
         output: CompletedProcess[str] = subprocess.run(
             ["icebreaker", "version"],
-            check=True,
+            check=False,
             text=True,
             capture_output=True,
         )

@@ -1,8 +1,8 @@
 from typing import Self
 from pathlib import Path
 
-from icebreaker._internal.code_quality import RuffFormatter
-from icebreaker._internal.code_quality import Formatter
+from icebreaker._internal.formatting import RuffFormatter
+from icebreaker._internal.formatting import Formatter
 
 
 class TestCodeFormatting:
