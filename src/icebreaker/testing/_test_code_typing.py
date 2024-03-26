@@ -1,8 +1,8 @@
 from typing import Self
 from pathlib import Path
 
-from icebreaker._internal.code_quality import MypyTypeChecker
-from icebreaker._internal.code_quality import TypeChecker
+from icebreaker._internal.typing import MypyTypeChecker
+from icebreaker._internal.typing import TypeChecker
 
 
 class TestCodeTyping:

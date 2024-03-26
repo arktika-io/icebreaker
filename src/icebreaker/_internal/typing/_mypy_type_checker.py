@@ -4,7 +4,7 @@ import subprocess
 from typing import Final
 from typing import Self
 
-from icebreaker._internal.code_quality._type_checker import CheckReport
+from icebreaker._internal.typing._type_checker import CheckReport
 
 
 class MypyTypeChecker:
