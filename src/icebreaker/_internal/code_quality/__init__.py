@@ -1,0 +1,1 @@
+from icebreaker._internal.code_quality._ruff_formatter import RuffFormatter as RuffFormatter
