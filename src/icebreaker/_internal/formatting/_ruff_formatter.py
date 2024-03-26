@@ -4,8 +4,8 @@ import subprocess
 from typing import Final
 from typing import Self
 
-from icebreaker._internal.code_quality._formatter import CheckReport
-from icebreaker._internal.code_quality._formatter import FormatReport
+from icebreaker._internal.formatting._formatter import CheckReport
+from icebreaker._internal.formatting._formatter import FormatReport
 
 
 class RuffFormatter:

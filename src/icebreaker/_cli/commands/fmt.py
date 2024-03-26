@@ -3,7 +3,7 @@ from typing import Self
 
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
-from icebreaker._internal.code_quality import Formatter
+from icebreaker._internal.formatting import Formatter
 
 
 class Fmt:

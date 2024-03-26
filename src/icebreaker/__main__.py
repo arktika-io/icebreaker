@@ -6,7 +6,7 @@ from icebreaker._cli import CLI
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
 from icebreaker._cli.interfaces import Reader
-from icebreaker._internal.code_quality import RuffFormatter
+from icebreaker._internal.formatting import RuffFormatter
 
 
 def main() -> NoReturn:
