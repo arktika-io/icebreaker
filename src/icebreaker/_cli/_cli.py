@@ -9,6 +9,7 @@ from typing import Self
 from typing import TypeAlias
 
 from icebreaker._cli.commands.fmt import Fmt
+from icebreaker._cli.commands.fmt_check import FmtCheck
 from icebreaker._cli.commands.version import Version
 from icebreaker._cli.interfaces import ExitCode
 from icebreaker._cli.interfaces import Printer
@@ -16,6 +17,7 @@ from icebreaker._cli.interfaces import Reader
 from icebreaker._internal.formatting import Formatter
 
 Command: TypeAlias = str
+Subcommand: TypeAlias = str | None
 Arguments: TypeAlias = dict[str, Any]
 Handler: TypeAlias = Callable[[], ExitCode]
 
@@ -39,10 +41,8 @@ class CLI:
         self.formatter = formatter
 
     def __call__(self: Self) -> ExitCode:
-        command_and_arguments: tuple[Command, Arguments] = self._get_called_command_and_arguments()
-        command: Command = command_and_arguments[0]
-        arguments: Arguments = command_and_arguments[1]
-        handler: Handler | None = self._get_handler(command=command, arguments=arguments)
+        command, subcommand, arguments = self._get_called_command_and_arguments()
+        handler: Handler | None = self._get_handler(command=command, subcommand=subcommand, arguments=arguments)
 
         if handler is None:
             self.error_printer(f"Unknown command: {command}\n")
@@ -56,31 +56,50 @@ class CLI:
 
         return exit_code
 
-    def _get_called_command_and_arguments(self: Self) -> tuple[Command, Arguments]:
-        argument_parser: ArgumentParser = ArgumentParser(
-            prog="icebreaker", description="Icebreaker CLI.", exit_on_error=False
+    def _get_called_command_and_arguments(self: Self) -> tuple[Command, Subcommand, Arguments]:
+        root_argument_parser: ArgumentParser = ArgumentParser(
+            prog="icebreaker",
+            description="Icebreaker CLI.",
+            exit_on_error=False,
         )
-        subparsers: Any = argument_parser.add_subparsers(title="Commands", dest="command")
+        root_subparsers: Any = root_argument_parser.add_subparsers(title="Commands", dest="command")
 
         # Add "fmt" command
-        fmt_parser: ArgumentParser = subparsers.add_parser(name="fmt", description="Format the codebase.")
-        fmt_parser.add_argument("--check", action="store_true", default=False)
-        fmt_parser.add_argument("target", metavar="TARGET", nargs="?", default=".", type=Path)
+        fmt_parser: ArgumentParser = root_subparsers.add_parser(
+            name="fmt",
+            description="Format the codebase.",
+        )
+        fmt_parser.add_argument("--target", metavar="TARGET", default=".", type=Path)
+
+        fmt_subparsers: Any = fmt_parser.add_subparsers(title="subcommands", dest="subcommand")
+
+        # Add "fmt check" command
+        fmt_check_parser: ArgumentParser = fmt_subparsers.add_parser(
+            name="check", description="Check the formatting of the codebase."
+        )
+        fmt_check_parser.add_argument("--target", metavar="TARGET", default=".", type=Path)
 
         # Add "version" command
-        subparsers.add_parser(name="version", description="Show version number and quit.")
+        root_subparsers.add_parser(name="version", description="Show version number and quit.")
 
-        parsed_arguments: Namespace = argument_parser.parse_args()
+        parsed_arguments: Namespace = root_argument_parser.parse_args()
         arguments: Arguments = vars(parsed_arguments)
         command: Command = arguments.pop("command")
-        return command, arguments
+        subcommand: Subcommand = arguments.pop("subcommand") if "subcommand" in arguments else None
+        return command, subcommand, arguments
 
-    def _get_handler(self: Self, command: Command, arguments: Arguments) -> Handler | None:
+    def _get_handler(self: Self, command: Command, subcommand: Subcommand, arguments: Arguments) -> Handler | None:
         handler: Handler | None = None
         if command == "version":
             handler = functools.partial(Version(printer=self.printer).__call__, **arguments)
         elif command == "fmt":
-            handler = functools.partial(
-                Fmt(printer=self.printer, error_printer=self.error_printer, formatter=self.formatter), **arguments
-            )
+            if subcommand == "check":
+                handler = functools.partial(
+                    FmtCheck(printer=self.printer, error_printer=self.error_printer, formatter=self.formatter),
+                    **arguments,
+                )
+            else:
+                handler = functools.partial(
+                    Fmt(printer=self.printer, error_printer=self.error_printer, formatter=self.formatter), **arguments
+                )
         return handler
