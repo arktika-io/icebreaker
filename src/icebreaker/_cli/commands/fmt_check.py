@@ -6,7 +6,7 @@ from icebreaker._cli.interfaces import Printer
 from icebreaker._internal.formatting import Formatter
 
 
-class Fmt:
+class FmtCheck:
     printer: Printer
     error_printer: Printer
     formatter: Formatter
@@ -32,7 +32,7 @@ class Fmt:
             )
             return ExitCode(1)
 
-        success, report = self.formatter.format(target=target)
+        success, report = self.formatter.check(target=target)
 
         if not success:
             self.error_printer(report)
