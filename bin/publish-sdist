@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-source scripts/activate
-VERSION=$(cat version)
-twine upload -r testpypi "dist/arktika-icebreaker-${VERSION}.tar.gz"

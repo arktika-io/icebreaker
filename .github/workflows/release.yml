@@ -21,8 +21,8 @@ jobs:
 
       matrix:
         packages:
-          - {os: "ubuntu-latest", python-version: "3.12", package: "sdist"}
-          - {os: "ubuntu-latest", python-version: "3.12", package: "wheel"}
+          - {os: "ubuntu-latest", python-version: "3.12", package: "python-sdist"}
+          - {os: "ubuntu-latest", python-version: "3.12", package: "python-wheel"}
 
     steps:
       - uses: actions/checkout@v4

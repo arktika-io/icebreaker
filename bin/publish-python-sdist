@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+
+source "$REPO/bin/env"
+
+VERSION="$(cat "$REPO/version")"
+FILE="$REPO/artifacts/arktika-icebreaker-${VERSION}.tar.gz"
+
+twine upload --repository testpypi "$FILE"

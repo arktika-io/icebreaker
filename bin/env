@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    source "$REPO/.env/Scripts/activate"
+else
+    source "$REPO/.env/bin/activate"
+fi

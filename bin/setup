@@ -2,9 +2,11 @@
 
 set -euo pipefail
 
-brew install python@3.12
+REPO="$(dirname "$(dirname "$(realpath "$0")")")"
 
-python3.12 -m venv --copies --clear --upgrade-deps ".venv"
-source scripts/activate
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install --editable ".[dev,cli,testing]"
+"$REPO/bin/clean"
+brew install python@3.12
+python3.12 -m venv --copies --clear "$REPO/.env"
+source "$REPO/bin/env"
+python -m pip install --upgrade pip
+python -m pip install --editable "${REPO}[dev]"

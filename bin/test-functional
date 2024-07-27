@@ -2,5 +2,7 @@
 
 set -euo pipefail
 
-source scripts/activate
-pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp .test_artifacts --asyncio-mode auto tests/functional
+REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+
+source "$REPO/bin/env"
+pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp "$REPO/.test_artifacts" --asyncio-mode auto "$REPO/tests/functional"

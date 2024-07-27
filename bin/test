@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
-scripts/test-acceptance
-scripts/test-functional
-scripts/test-unit
+REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+
+"$REPO/scripts/test-acceptance"
+"$REPO/scripts/test-functional"
+"$REPO/scripts/test-unit"
