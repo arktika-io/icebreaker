@@ -54,7 +54,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: setup
-        run: scripts/setup
+        run: bin/setup
 
       - name: run tests
-        run: scripts/test-${{ matrix.test-type }}
+        run: bin/test-${{ matrix.test-type }}

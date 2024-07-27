@@ -40,10 +40,10 @@ jobs:
           python-version: ${{ matrix.packages.python-version }}
 
       - name: setup
-        run: scripts/setup
+        run: bin/setup
 
       - name: package-${{ matrix.packages.package }}
-        run: scripts/package-${{ matrix.packages.package }}
+        run: bin/package-${{ matrix.packages.package }}
 
       - name: publish-${{ matrix.packages.package }}
         uses: pypa/gh-action-pypi-publish@release/v1
