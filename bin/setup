@@ -2,7 +2,9 @@
 
 set -euo pipefail
 
-python -m venv --copies --clear --upgrade-deps ".venv"
+brew install python@3.12
+
+python3.12 -m venv --copies --clear --upgrade-deps ".venv"
 source scripts/activate
 python -m pip install --upgrade pip setuptools wheel
 python -m pip install --editable ".[dev,cli,testing]"
