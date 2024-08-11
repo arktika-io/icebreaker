@@ -9,4 +9,4 @@ brew install python@3.12
 python3.12 -m venv --copies --clear "$REPO/.env"
 source "$REPO/bin/env"
 python -m pip install --upgrade pip
-python -m pip install --editable "${REPO}[dev]"
+python -m pip install --editable "${REPO}[dev,cli,testing]"
