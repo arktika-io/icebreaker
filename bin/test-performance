@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
-source "$REPO/bin/env"
-pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp "$REPO/.test_artifacts" --asyncio-mode auto "$REPO/tests/performance"
+source "${PROJECT}/bin/env"
+pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp "${PROJECT}/.test_artifacts" --asyncio-mode auto "${PROJECT}/tests/performance"

@@ -2,13 +2,13 @@
 
 set -euo pipefail
 
-REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
-source "$REPO/bin/env"
+source "${PROJECT}/bin/env"
 
-rm -rf "$REPO/dist"
-rm -rf "$REPO/artifacts"
-mkdir "$REPO/artifacts"
-cp "$REPO/version" "$REPO/src/icebreaker"
-python -m build --wheel --outdir "$REPO/artifacts"
-rm "$REPO/src/icebreaker/version"
+rm -rf "${PROJECT}/dist"
+rm -rf "${PROJECT}/artifacts"
+mkdir "${PROJECT}/artifacts"
+cp "${PROJECT}/version" "${PROJECT}/src/icebreaker"
+python -m build --wheel --outdir "${PROJECT}/artifacts"
+rm "${PROJECT}/src/icebreaker/version"

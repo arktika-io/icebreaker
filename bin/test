@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
-"$REPO/scripts/test-acceptance"
-"$REPO/scripts/test-functional"
-"$REPO/scripts/test-unit"
+"${PROJECT}/scripts/test-acceptance"
+"${PROJECT}/scripts/test-functional"
+"${PROJECT}/scripts/test-unit"

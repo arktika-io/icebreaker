@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
-if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-    source "$REPO/.env/Scripts/activate"
+if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "win32" ]]; then
+    source "${PROJECT}/.env/Scripts/activate"
 else
-    source "$REPO/.env/bin/activate"
+    source "${PROJECT}/.env/bin/activate"
 fi

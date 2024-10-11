@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-REPO="$(dirname "$(dirname "$(realpath "$0")")")"
+PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
-"$REPO/bin/clean"
+"${PROJECT}/bin/clean"
 brew install python@3.12
-python3.12 -m venv --copies --clear "$REPO/.env"
-source "$REPO/bin/env"
+python3.12 -m venv --copies --clear "${PROJECT}/.env"
+source "${PROJECT}/bin/env"
 python -m pip install --upgrade pip
-python -m pip install --editable "${REPO}[dev,cli,testing]"
+python -m pip install --editable "${PROJECT}[dev,cli,testing]"
