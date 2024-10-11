@@ -7,3 +7,7 @@ if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "win32" ]]; then
 else
     source "${PROJECT}/.env/bin/activate"
 fi
+
+if [[ ${0} == "${BASH_SOURCE}" ]]; then
+    "$@"
+fi

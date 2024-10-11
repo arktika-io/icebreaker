@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
-
-source "${PROJECT}/bin/env"
-"$@"
