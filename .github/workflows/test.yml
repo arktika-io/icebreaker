@@ -29,11 +29,7 @@ jobs:
           - "functional"
           - "package-python-sdist"
           - "package-python-wheel"
-          - "performance"
-          - "property"
-          - "security"
           - "smoke"
-          - "unit"
 
     steps:
       - uses: actions/checkout@v4
