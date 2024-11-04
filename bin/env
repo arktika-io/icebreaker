@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
 PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
+ENV_DIR="${PROJECT}/.env"
+PYTHON_ENV_DIR="${ENV_DIR}/python"
+
+if [ ! -d "${ENV_DIR}" ]; then
+    echo "Error: Environment not setup. Did you run bin/setup?"
+    return 1
+fi
 
 if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "win32" ]]; then
-    source "${PROJECT}/.env/Scripts/activate"
+    source "${PYTHON_ENV_DIR}/Scripts/activate"
 else
-    source "${PROJECT}/.env/bin/activate"
+    source "${PYTHON_ENV_DIR}/bin/activate"
 fi
 
 if [[ ${0} == "${BASH_SOURCE}" ]]; then
