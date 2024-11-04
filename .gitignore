@@ -11,4 +11,3 @@ build/
 .hypothesis/
 .test_artifacts/
 .docker/
-src/icebreaker/version
