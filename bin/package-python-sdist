@@ -3,12 +3,10 @@
 set -euo pipefail
 
 PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
+DIST_DIR="${PROJECT}/dist"
+
 
 source "${PROJECT}/bin/env"
 
-rm -rf "${PROJECT}/dist"
-rm -rf "${PROJECT}/artifacts"
-mkdir "${PROJECT}/artifacts"
-cp "${PROJECT}/version" "${PROJECT}/src/icebreaker"
-python -m build --sdist --outdir "${PROJECT}/artifacts"
-rm "${PROJECT}/src/icebreaker/version"
+rm -rf "${DIST_DIR}"
+uv build --sdist --out-dir "${DIST_DIR}"
