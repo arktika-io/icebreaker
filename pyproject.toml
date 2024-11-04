@@ -57,3 +57,9 @@ requires = [
     "wheel==0.*",
 ]
 build-backend = "setuptools.build_meta"
+
+
+[tool.mypy]
+plugins = [
+  "pydantic.mypy"
+]
