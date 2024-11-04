@@ -17,8 +17,6 @@ license = { file = "LICENSE" }
 
 [project.optional-dependencies]
 dev = [
-    "build==1.*",
-    "twine==4.*",
     "hypothesis==6.*",
     "pytest==7.*",
     "pytest-asyncio==0.*",
