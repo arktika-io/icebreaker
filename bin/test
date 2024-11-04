@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
-
-"${PROJECT}/scripts/test-acceptance"
-"${PROJECT}/scripts/test-functional"
-"${PROJECT}/scripts/test-unit"
