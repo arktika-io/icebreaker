@@ -6,7 +6,4 @@ PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
 source "${PROJECT}/bin/env"
 
-VERSION="$(cat "${PROJECT}/version")"
-FILE="${PROJECT}/artifacts/arktika-icebreaker-${VERSION}.tar.gz"
-
-twine upload --repository testpypi "${FILE}"
+uv publish

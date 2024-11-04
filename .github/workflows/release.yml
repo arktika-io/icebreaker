@@ -9,9 +9,6 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  TWINE_NON_INTERACTIVE: "true"
-
 jobs:
   release:
     runs-on: ${{ matrix.packages.os }}
@@ -28,6 +25,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: ./bin/setup
       - run: ./bin/package-${{ matrix.packages.package }}
-      - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          print-hash: true
+      - run: ./bin/publish-${{ matrix.packages.package }}
