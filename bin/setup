@@ -13,11 +13,9 @@ cd "${PROJECT}"
 "${PROJECT}/bin/clean"
 brew install "uv" "python@${PYTHON_VERSION}"
 uv venv \
-  --directory="${PROJECT}" \
   --python-preference "only-system" \
   --python "${PYTHON_VERSION}" \
   --prompt "$(basename "${PROJECT}")" \
   --quiet
 uv sync \
-  --directory="${PROJECT}" \
   --all-extras
