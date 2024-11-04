@@ -27,6 +27,8 @@ jobs:
         test-type:
           - "acceptance"
           - "functional"
+          - "package-python-sdist"
+          - "package-python-wheel"
           - "performance"
           - "property"
           - "security"

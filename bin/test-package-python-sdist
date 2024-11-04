@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
+
+"${PROJECT}/bin/package-python-sdist"
