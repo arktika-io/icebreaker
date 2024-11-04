@@ -12,3 +12,4 @@ built/
 .hypothesis/
 .test_artifacts/
 .docker/
+uv.lock
