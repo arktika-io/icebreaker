@@ -1,5 +1,6 @@
 from typing import Generic
 from typing import Self
+from io import BytesIO
 
 from icebreaker.store_backends.protocol import Key as Key
 from icebreaker.store_backends.protocol import Data as Data
@@ -47,9 +48,28 @@ class Store[T]:
             raise NotImplementedError()
         return await self._store_backend.read(key=key)
 
+    async def read_string(
+        self: Self,
+        key: Key,
+        encoding: str = "utf-8",
+    ) -> str:
+        """
+        Read a string from the store at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyDoesNotExist
+            ConnectionTimeout
+            ReadTimeout
+            PermissionError
+        """
+        data = await self.read(key=key)
+        return data.read().decode(encoding)
+
     async def write(self: Self, key: Key, data: Data) -> None:
         """
-        Write data to the store backend at the given key.
+        Write data to the store at the given key.
         If the key already exists, the existing data will be overwritten.
 
         Raises:
@@ -63,3 +83,23 @@ class Store[T]:
         if not self.supports_write:
             raise NotImplementedError()
         await self._store_backend.write(key=key, data=data)
+
+    async def write_string(
+        self: Self,
+        key: Key,
+        data: str,
+        encoding: str = "utf-8",
+    ) -> None:
+        """
+        Write a string to the store backend at the given key.
+        If the key already exists, the existing data will be overwritten.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            ConnectionTimeout
+            Timeout
+            StoreBackendOutOfSpace
+            PermissionError
+        """
+        await self.write(key=key, data=BytesIO(data.encode(encoding)))

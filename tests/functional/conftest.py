@@ -7,7 +7,6 @@ from tests.functional.fixtures.env_var_store_backend import *
 from pytest import FixtureRequest
 from icebreaker.store_backends.protocol import Read
 from uuid import uuid4
-from io import BytesIO
 from icebreaker.store import Store
 
 
@@ -33,16 +32,10 @@ def populated_store_key() -> str:
     return str(uuid4())
 
 
-@pytest.fixture(scope="session")
-def populated_store_data() -> bytes:
-    return b"fake"
-
-
 @pytest.fixture(scope="function")
 async def populated_store(
     store: Store,
     populated_store_key: str,
-    populated_store_data: bytes,
 ) -> Read:
-    await store.write(key=populated_store_key, data=BytesIO(populated_store_data))
+    await store.write_string(key=populated_store_key, data="test")
     return store
