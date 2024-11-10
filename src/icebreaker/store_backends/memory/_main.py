@@ -23,7 +23,6 @@ class MemoryStoreBackend:
         try:
             return BytesIO(self._data_store[key])
         except KeyError:
-            print(self._data_store.keys())
             raise KeyDoesNotExist(key)
 
     async def write(self: Self, key: Key, data: Data) -> None:
