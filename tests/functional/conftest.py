@@ -5,24 +5,39 @@ from pytest import FixtureRequest
 from icebreaker.store_backends.protocol import Read
 from uuid import uuid4
 from io import BytesIO
+from icebreaker.store import Store
+
+
+@pytest.fixture(
+    scope="function",
+    params=[
+        "memory_store_backend",
+    ],
+)
+def store_backend(request: FixtureRequest) -> Read:
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture(scope="function")
+def store(store_backend: Read) -> Read:
+    return Store(store_backend=store_backend)
 
 
 @pytest.fixture(scope="session")
-def populated_store_backend_key() -> str:
+def populated_store_key() -> str:
     return str(uuid4())
 
 
 @pytest.fixture(scope="session")
-def populated_store_backend_data() -> bytes:
+def populated_store_data() -> bytes:
     return b"fake"
 
 
-@pytest.fixture(scope="function", params=["memory_store_backend"])
-async def populated_store_backend(
-    request: FixtureRequest,
-    populated_store_backend_key: str,
-    populated_store_backend_data: bytes,
+@pytest.fixture(scope="function")
+async def populated_store(
+    store: Store,
+    populated_store_key: str,
+    populated_store_data: bytes,
 ) -> Read:
-    store_backend = request.getfixturevalue(request.param)
-    await store_backend.write(key=populated_store_backend_key, data=BytesIO(populated_store_backend_data))
-    return store_backend
+    await store.write(key=populated_store_key, data=BytesIO(populated_store_data))
+    return store

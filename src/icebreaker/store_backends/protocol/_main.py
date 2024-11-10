@@ -35,31 +35,8 @@ PermissionError = PermissionError
 
 
 class Read(Protocol):
-    async def read(self: Self, key: Key) -> Data:
-        """
-        Read data from the store backend at the given key.
-
-        Raises:
-            StoreBackendDoesNotExist
-            InvalidKey
-            KeyDoesNotExist
-            ConnectionTimeout
-            ReadTimeout
-            PermissionError
-        """
+    async def read(self: Self, key: Key) -> Data: ...
 
 
 class Write(Protocol):
-    async def write(self: Self, key: Key, data: Data) -> None:
-        """
-        Write data to the store backend at the given key.
-        If the key already exists, the existing data will be overwritten.
-
-        Raises:
-            StoreBackendDoesNotExist
-            InvalidKey
-            ConnectionTimeout
-            Timeout
-            StoreBackendOutOfSpace
-            PermissionError
-        """
+    async def write(self: Self, key: Key, data: Data) -> None: ...
