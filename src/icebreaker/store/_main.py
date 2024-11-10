@@ -23,6 +23,14 @@ class Store[T]:
     ) -> None:
         self._store_backend = store_backend
 
+    @property
+    def supports_read(self: Self) -> bool:
+        return hasattr(self._store_backend, "read")
+
+    @property
+    def supports_write(self: Self) -> bool:
+        return hasattr(self._store_backend, "write")
+
     async def read(self: Self, key: Key) -> Data:
         """
         Read data from the store at the given key.
@@ -35,6 +43,8 @@ class Store[T]:
             ReadTimeout
             PermissionError
         """
+        if not self.supports_read:
+            raise NotImplementedError()
         return await self._store_backend.read(key=key)
 
     async def write(self: Self, key: Key, data: Data) -> None:
@@ -50,4 +60,6 @@ class Store[T]:
             StoreBackendOutOfSpace
             PermissionError
         """
+        if not self.supports_write:
+            raise NotImplementedError()
         await self._store_backend.write(key=key, data=data)
