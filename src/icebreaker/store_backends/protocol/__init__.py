@@ -9,3 +9,4 @@ from icebreaker.store_backends.protocol._main import StoreBackendOutOfSpace as S
 from icebreaker.store_backends.protocol._main import PermissionError as PermissionError
 from icebreaker.store_backends.protocol._main import Read as Read
 from icebreaker.store_backends.protocol._main import Write as Write
+from icebreaker.store_backends.protocol._main import StoreBackend as StoreBackend

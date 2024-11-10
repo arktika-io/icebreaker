@@ -40,3 +40,6 @@ class Read(Protocol):
 
 class Write(Protocol):
     async def write(self: Self, key: Key, data: Data) -> None: ...
+
+
+StoreBackend: TypeAlias = Read | Write

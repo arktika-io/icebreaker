@@ -28,8 +28,8 @@ class EnvVarStoreBackend:
     async def read(self: Self, key: Key) -> Data:
         try:
             data = await self._store_backend.read(key=self._var)
-            data = json.loads(data.read().decode("utf-8"))
-            return self._decode(data=data[key])
+            loaded_data = json.loads(data.read().decode("utf-8"))
+            return self._decode(data=loaded_data[key])
         except KeyError:
             raise KeyDoesNotExist(key)
 

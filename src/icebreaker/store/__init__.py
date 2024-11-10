@@ -10,3 +10,4 @@ from icebreaker.store._main import StoreBackendOutOfSpace as StoreBackendOutOfSp
 from icebreaker.store._main import PermissionError as PermissionError
 from icebreaker.store._main import Read as Read
 from icebreaker.store._main import Write as Write
+from icebreaker.store._main import StoreBackend as StoreBackend

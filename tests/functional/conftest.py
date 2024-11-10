@@ -4,7 +4,8 @@ from tests.functional.fixtures.memory_store_backend import *  # noqa
 from tests.functional.fixtures.env_vars_store_backend import *  # noqa
 from tests.functional.fixtures.env_var_store_backend import *  # noqa
 from pytest import FixtureRequest
-from icebreaker.store_backends.protocol import Read
+from icebreaker.store_backends.protocol import Write
+from icebreaker.store_backends.protocol import StoreBackend
 from uuid import uuid4
 from icebreaker.store import Store
 
@@ -17,12 +18,13 @@ from icebreaker.store import Store
         "env_var_store_backend",
     ],
 )
-def store_backend(request: FixtureRequest) -> Read:
-    return request.getfixturevalue(request.param)
+def store_backend(request: FixtureRequest) -> StoreBackend:
+    store_backend: StoreBackend = request.getfixturevalue(request.param)
+    return store_backend
 
 
 @pytest.fixture(scope="function")
-def store(store_backend: Read) -> Read:
+def store(store_backend: StoreBackend) -> Store[StoreBackend]:
     return Store(store_backend=store_backend)
 
 
@@ -33,8 +35,8 @@ def populated_store_key() -> str:
 
 @pytest.fixture(scope="function")
 async def populated_store(
-    store: Store,
+    store: Store[Write],
     populated_store_key: str,
-) -> Read:
+) -> Store[StoreBackend]:
     await store.write_string(key=populated_store_key, data="test")
     return store

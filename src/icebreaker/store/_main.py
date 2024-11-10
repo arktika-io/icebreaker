@@ -14,12 +14,13 @@ from icebreaker.store_backends.protocol import StoreBackendOutOfSpace as StoreBa
 from icebreaker.store_backends.protocol import PermissionError as PermissionError
 from icebreaker.store_backends.protocol import Read as Read
 from icebreaker.store_backends.protocol import Write as Write
+from icebreaker.store_backends.protocol import StoreBackend as StoreBackend
 
 
-class Store[T: Read | Write]:
-    _store_backend: T
+class Store[StoreBackend]:
+    _store_backend: StoreBackend
 
-    def __init__(self: Self, store_backend: T) -> None:
+    def __init__(self: Self, store_backend: StoreBackend) -> None:
         self._store_backend = store_backend
 
     @property
