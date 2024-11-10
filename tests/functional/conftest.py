@@ -2,6 +2,8 @@ import pytest
 
 from tests.functional.fixtures.memory_store_backend import *
 from tests.functional.fixtures.env_vars_store_backend import *
+
+from tests.functional.fixtures.env_var_store_backend import *
 from pytest import FixtureRequest
 from icebreaker.store_backends.protocol import Read
 from uuid import uuid4
@@ -14,6 +16,7 @@ from icebreaker.store import Store
     params=[
         "memory_store_backend",
         "env_vars_store_backend",
+        "env_var_store_backend",
     ],
 )
 def store_backend(request: FixtureRequest) -> Read:
