@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Self
 from io import BytesIO
 
@@ -14,13 +16,10 @@ from icebreaker.store_backends.protocol import Read as Read
 from icebreaker.store_backends.protocol import Write as Write
 
 
-class Store[T]:
+class Store[T: Read | Write]:
     _store_backend: T
 
-    def __init__(
-        self: Self,
-        store_backend: T,
-    ) -> None:
+    def __init__(self: Self, store_backend: T) -> None:
         self._store_backend = store_backend
 
     @property
@@ -31,7 +30,7 @@ class Store[T]:
     def supports_write(self: Self) -> bool:
         return hasattr(self._store_backend, "write")
 
-    async def read(self: Self, key: Key) -> Data:
+    async def read(self: Store[Read], key: Key) -> Data:
         """
         Read data from the store at the given key.
 
@@ -48,7 +47,7 @@ class Store[T]:
         return await self._store_backend.read(key=key)
 
     async def read_string(
-        self: Self,
+        self: Store[Read],
         key: Key,
         encoding: str = "utf-8",
     ) -> str:
@@ -66,7 +65,7 @@ class Store[T]:
         data = await self.read(key=key)
         return data.read().decode(encoding)
 
-    async def write(self: Self, key: Key, data: Data) -> None:
+    async def write(self: Store[Write], key: Key, data: Data) -> None:
         """
         Write data to the store at the given key.
         If the key already exists, the existing data will be overwritten.
@@ -84,7 +83,7 @@ class Store[T]:
         await self._store_backend.write(key=key, data=data)
 
     async def write_string(
-        self: Self,
+        self: Store[Write],
         key: Key,
         data: str,
         encoding: str = "utf-8",
