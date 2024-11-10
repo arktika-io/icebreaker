@@ -1,4 +1,3 @@
-from typing import Generic
 from typing import Self
 from io import BytesIO
 

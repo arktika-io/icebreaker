@@ -34,7 +34,15 @@ class RuffFormatter:
         if not self.dependencies_are_installed:
             raise FileNotFoundError(f'"{self.ruff_binary_name}" not found.')
 
-    def format(
+    def format(self: Self, target: Path) -> FormatReport:
+        format_success, format_report = self._format(target=target)
+        check_success, check_report = self._check(target=target, fix=True)
+        return format_success and check_success, format_report + "\n" + check_report
+
+    def check(self: Self, target: Path) -> CheckReport:
+        return self._check(target=target, fix=False)
+
+    def _format(
         self: Self,
         target: Path,
     ) -> FormatReport:
@@ -50,15 +58,18 @@ class RuffFormatter:
             return True, report
         return False, report
 
-    def check(
+    def _check(
         self: Self,
         target: Path,
+        fix: bool = False,
     ) -> CheckReport:
         self._error_if_dependencies_are_not_installed()
 
         args: list[str] = [self.ruff_binary_name, "check", str(target)]
         for config in self.RUFF_CONFIG:
             args.extend(["--config", config])
+        if fix:
+            args.append("--fix")
 
         result = subprocess.run(args, check=False, capture_output=True)
         report = "\n".join([result.stdout.decode("utf-8"), result.stderr.decode("utf-8")])

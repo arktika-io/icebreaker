@@ -1,9 +1,8 @@
 import pytest
 
-from tests.functional.fixtures.memory_store_backend import *
-from tests.functional.fixtures.env_vars_store_backend import *
-
-from tests.functional.fixtures.env_var_store_backend import *
+from tests.functional.fixtures.memory_store_backend import *  # noqa
+from tests.functional.fixtures.env_vars_store_backend import *  # noqa
+from tests.functional.fixtures.env_var_store_backend import *  # noqa
 from pytest import FixtureRequest
 from icebreaker.store_backends.protocol import Read
 from uuid import uuid4
