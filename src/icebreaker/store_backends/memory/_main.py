@@ -30,3 +30,9 @@ class MemoryStoreBackend:
             self._data_store[key] = data.read()
         except MemoryError:
             raise StoreBackendOutOfSpace()
+
+    async def delete(self: Self, key: Key) -> None:
+        try:
+            del self._data_store[key]
+        except KeyError:
+            raise KeyDoesNotExist(key)

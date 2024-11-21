@@ -30,6 +30,12 @@ class EnvVarsStoreBackend:
     async def write(self: Self, key: Key, data: Data) -> None:
         self._env_vars[key] = self._encode(data)
 
+    async def delete(self: Self, key: Key) -> None:
+        try:
+            del self._env_vars[key]
+        except KeyError:
+            raise KeyDoesNotExist(key)
+
     def _encode(self: Self, data: Data) -> str:
         return b64encode(gzip.compress(data.read())).decode(self._encoding)
 

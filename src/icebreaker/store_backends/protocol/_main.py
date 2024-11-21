@@ -42,4 +42,8 @@ class Write(Protocol):
     async def write(self: Self, key: Key, data: Data) -> None: ...
 
 
-StoreBackend: TypeAlias = Read | Write
+class Delete(Protocol):
+    async def delete(self: Self, key: Key) -> None: ...
+
+
+StoreBackend: TypeAlias = Read | Write | Delete

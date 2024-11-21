@@ -14,6 +14,7 @@ from icebreaker.store_backends.protocol import StoreBackendOutOfSpace as StoreBa
 from icebreaker.store_backends.protocol import PermissionError as PermissionError
 from icebreaker.store_backends.protocol import Read as Read
 from icebreaker.store_backends.protocol import Write as Write
+from icebreaker.store_backends.protocol import Delete as Delete
 from icebreaker.store_backends.protocol import StoreBackend as StoreBackend
 
 
@@ -30,6 +31,10 @@ class Store[StoreBackend]:
     @property
     def supports_write(self: Self) -> bool:
         return hasattr(self._store_backend, "write")
+
+    @property
+    def supports_delete(self: Self) -> bool:
+        return hasattr(self._store_backend, "delete")
 
     async def read(self: Store[Read], key: Key) -> Data:
         """
@@ -102,3 +107,19 @@ class Store[StoreBackend]:
             PermissionError
         """
         await self.write(key=key, data=BytesIO(data.encode(encoding)))
+
+    async def delete(
+        self: Store[Delete],
+        key: Key,
+    ) -> None:
+        """
+        Delete the data at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyDoesNotExist
+            ConnectionTimeout
+            PermissionError
+        """
+        await self._store_backend.delete(key=key)

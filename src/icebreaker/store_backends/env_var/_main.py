@@ -45,6 +45,17 @@ class EnvVarStoreBackend:
         old_data_encoded = json.dumps(old_data_decoded).encode("utf-8")
         await self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
 
+    async def delete(self: Self, key: Key) -> None:
+        try:
+            old_data_file_obj = await self._store_backend.read(key=self._var)
+            old_data = old_data_file_obj.read()
+            old_data_decoded = json.loads(old_data.decode("utf-8"))
+            del old_data_decoded[key]
+            old_data_encoded = json.dumps(old_data_decoded).encode("utf-8")
+            await self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
+        except KeyError:
+            raise KeyDoesNotExist(key)
+
     def _encode(self: Self, data: Data) -> str:
         return b64encode(gzip.compress(data.read())).decode(self._encoding)
 
