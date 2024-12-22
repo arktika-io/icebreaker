@@ -41,6 +41,10 @@ class Store[StoreBackend]:
     def supports_delete(self: Self) -> bool:
         return hasattr(self._store_backend, "delete")
 
+    @property
+    def supports_delete_if_exists(self: Self) -> bool:
+        return self.supports_delete
+
     def read(self: Store[Read], key: Key) -> Data:
         """
         Read data from the store at the given key.
@@ -145,3 +149,21 @@ class Store[StoreBackend]:
             PermissionError
         """
         self._store_backend.delete(key=key)
+
+    def delete_if_exists(
+        self: Store[Delete],
+        key: Key,
+    ) -> None:
+        """
+        Identical to `delete`, but does not raise an error if the key does not exist.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            ConnectionTimeout
+            PermissionError
+        """
+        try:
+            self.delete(key=key)
+        except KeyDoesNotExist:
+            pass
