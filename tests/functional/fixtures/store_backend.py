@@ -1,13 +1,14 @@
-import pytest
-
-from pytest import FixtureRequest
-from icebreaker.store_backends.protocol import Write
-from icebreaker.store_backends.protocol import Read
-from icebreaker.store_backends.protocol import Delete
-from icebreaker.store_backends.protocol import StoreBackend
-from icebreaker.store_backends.protocol import WriteIfNotExists
 from uuid import uuid4
+
+import pytest
+from pytest import FixtureRequest
+
 from icebreaker.store import Store
+from icebreaker.store_backends.protocol import Delete
+from icebreaker.store_backends.protocol import Read
+from icebreaker.store_backends.protocol import StoreBackend
+from icebreaker.store_backends.protocol import Write
+from icebreaker.store_backends.protocol import WriteIfNotExists
 
 
 @pytest.fixture(

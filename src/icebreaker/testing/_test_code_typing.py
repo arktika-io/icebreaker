@@ -1,5 +1,5 @@
-from typing import Self
 from pathlib import Path
+from typing import Self
 
 from icebreaker._internal.typing import MypyTypeChecker
 from icebreaker._internal.typing import TypeChecker

@@ -1,10 +1,12 @@
-from icebreaker.store import Store
-from icebreaker.store import KeyExists
-from uuid import uuid4
 from io import BytesIO
-import pytest
-from icebreaker.store import WriteIfNotExists
 from typing import Self
+from uuid import uuid4
+
+import pytest
+
+from icebreaker.store import KeyExists
+from icebreaker.store import Store
+from icebreaker.store import WriteIfNotExists
 
 
 class TestWriteIfNotExists:

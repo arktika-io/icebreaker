@@ -1,9 +1,11 @@
+from io import BytesIO
+from typing import Self
+from uuid import uuid4
+
+import pytest
+
 from icebreaker.store import Store
 from icebreaker.store import Write
-from uuid import uuid4
-from io import BytesIO
-import pytest
-from typing import Self
 
 
 class TestWrite:

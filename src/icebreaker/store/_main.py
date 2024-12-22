@@ -1,22 +1,22 @@
 from __future__ import annotations
 
-from typing import Self
 from io import BytesIO
+from typing import Self
 
-from icebreaker.store_backends.protocol import Key as Key
 from icebreaker.store_backends.protocol import Data as Data
-from icebreaker.store_backends.protocol import StoreBackendDoesNotExist as StoreBackendDoesNotExist
+from icebreaker.store_backends.protocol import Delete as Delete
 from icebreaker.store_backends.protocol import InvalidKey as InvalidKey
+from icebreaker.store_backends.protocol import Key as Key
 from icebreaker.store_backends.protocol import KeyDoesNotExist as KeyDoesNotExist
 from icebreaker.store_backends.protocol import KeyExists as KeyExists
-from icebreaker.store_backends.protocol import Timeout as Timeout
-from icebreaker.store_backends.protocol import StoreBackendOutOfSpace as StoreBackendOutOfSpace
 from icebreaker.store_backends.protocol import PermissionError as PermissionError
 from icebreaker.store_backends.protocol import Read as Read
+from icebreaker.store_backends.protocol import StoreBackend as StoreBackend
+from icebreaker.store_backends.protocol import StoreBackendDoesNotExist as StoreBackendDoesNotExist
+from icebreaker.store_backends.protocol import StoreBackendOutOfSpace as StoreBackendOutOfSpace
+from icebreaker.store_backends.protocol import Timeout as Timeout
 from icebreaker.store_backends.protocol import Write as Write
 from icebreaker.store_backends.protocol import WriteIfNotExists as WriteIfNotExists
-from icebreaker.store_backends.protocol import Delete as Delete
-from icebreaker.store_backends.protocol import StoreBackend as StoreBackend
 
 
 class Store[StoreBackend]:

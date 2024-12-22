@@ -1,9 +1,11 @@
-from icebreaker.store import Store
-from icebreaker.store import KeyDoesNotExist
-import pytest
-from uuid import uuid4
-from icebreaker.store import Delete
 from typing import Self
+from uuid import uuid4
+
+import pytest
+
+from icebreaker.store import Delete
+from icebreaker.store import KeyDoesNotExist
+from icebreaker.store import Store
 
 
 class TestDelete:

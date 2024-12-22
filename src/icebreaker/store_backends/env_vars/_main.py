@@ -1,17 +1,17 @@
-import os
-from typing import Self
-from typing import ClassVar
-from io import BytesIO
-from collections.abc import MutableMapping
-from base64 import b64encode
 from base64 import b64decode
+from base64 import b64encode
+from collections.abc import MutableMapping
 import gzip
-
-from icebreaker.store_backends.protocol import KeyDoesNotExist
-from icebreaker.store_backends.protocol import Key
-from icebreaker.store_backends.protocol import Data
-from icebreaker.store_backends.protocol import KeyExists
+from io import BytesIO
+import os
 from threading import RLock
+from typing import ClassVar
+from typing import Self
+
+from icebreaker.store_backends.protocol import Data
+from icebreaker.store_backends.protocol import Key
+from icebreaker.store_backends.protocol import KeyDoesNotExist
+from icebreaker.store_backends.protocol import KeyExists
 
 
 class EnvVarsStoreBackend:

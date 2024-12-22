@@ -1,5 +1,6 @@
-import pytest
 from uuid import uuid4
+
+import pytest
 
 from icebreaker.store_backends.env_var import EnvVarStoreBackend
 

@@ -18,6 +18,7 @@ class RuffFormatter:
         "format.indent-style='space'",
         "lint.isort.force-single-line=true",
         "lint.isort.force-sort-within-sections=true",
+        "lint.select=['I']",
     ]
 
     def __init__(

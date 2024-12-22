@@ -1,7 +1,8 @@
-from icebreaker.store import Store
-from uuid import uuid4
-from icebreaker.store import Delete
 from typing import Self
+from uuid import uuid4
+
+from icebreaker.store import Delete
+from icebreaker.store import Store
 
 
 class TestDeleteIfExists:

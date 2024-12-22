@@ -1,13 +1,13 @@
-from typing import Self
-from typing import TypeAlias
 from io import BytesIO
 from threading import RLock
+from typing import Self
+from typing import TypeAlias
 
-from icebreaker.store_backends.protocol import KeyDoesNotExist
-from icebreaker.store_backends.protocol import Key
 from icebreaker.store_backends.protocol import Data
-from icebreaker.store_backends.protocol import StoreBackendOutOfSpace
+from icebreaker.store_backends.protocol import Key
+from icebreaker.store_backends.protocol import KeyDoesNotExist
 from icebreaker.store_backends.protocol import KeyExists
+from icebreaker.store_backends.protocol import StoreBackendOutOfSpace
 
 DataStore: TypeAlias = dict[Key, bytes]
 

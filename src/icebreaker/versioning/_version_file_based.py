@@ -4,9 +4,9 @@ import json
 import logging
 import os
 from pathlib import Path
+from types import FrameType
 from types import ModuleType
 from typing import Self
-from types import FrameType
 
 
 class VersionFileBased:
