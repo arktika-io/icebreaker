@@ -16,9 +16,7 @@ class TestWrite:
     )
     def test_does_not_crash(
         self: Self,
-        store: Store[Write],
+        store_implementing_write: Store[Write],
         data: bytes,
     ) -> None:
-        if not isinstance(store._store_backend, Write):
-            pytest.skip("write not implemented")
-        store.write(key=str(uuid4()), data=BytesIO(data))
+        store_implementing_write.write(key=str(uuid4()), data=BytesIO(data))

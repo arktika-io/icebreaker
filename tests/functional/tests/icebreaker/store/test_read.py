@@ -9,28 +9,23 @@ from typing import Self
 class TestRead:
     def test_does_not_crash(
         self: Self,
-        populated_store: Store[Read],
+        populated_store_implementing_read: Store[Read],
         populated_store_key: str,
     ) -> None:
-        if not isinstance(populated_store._store_backend, Read):
-            pytest.skip("read not implemented")
-        populated_store.read(key=populated_store_key)
+        populated_store_implementing_read.read(key=populated_store_key)
 
     def test_does_not_crash_as_a_context_manager(
         self: Self,
-        populated_store: Store[Read],
+        populated_store_implementing_read: Store[Read],
         populated_store_key: str,
     ) -> None:
-        with populated_store.read(key=populated_store_key) as data:
+        with populated_store_implementing_read.read(key=populated_store_key) as data:
             assert data.read()
         assert data.closed
 
     def test_raises_key_does_not_exist_when_attempting_to_read_non_existent_key(
         self: Self,
-        populated_store: Store[Read],
+        store_implementing_read: Store[Read],
     ) -> None:
-        if not isinstance(populated_store._store_backend, Read):
-            pytest.skip("read not implemented")
-
         with pytest.raises(KeyDoesNotExist):
-            populated_store.read(key=str(uuid4()))
+            store_implementing_read.read(key=str(uuid4()))

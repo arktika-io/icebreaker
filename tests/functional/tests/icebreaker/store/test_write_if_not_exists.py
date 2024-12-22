@@ -17,19 +17,17 @@ class TestWriteIfNotExists:
     )
     def test_does_not_crash(
         self: Self,
-        store: Store[WriteIfNotExists],
+        store_implementing_write_if_not_exists: Store[WriteIfNotExists],
         data: bytes,
     ) -> None:
-        if not isinstance(store._store_backend, WriteIfNotExists):
-            pytest.skip("write_if_not_exists not implemented")
-        store.write_if_not_exists(key=str(uuid4()), data=BytesIO(data))
+        store_implementing_write_if_not_exists.write_if_not_exists(key=str(uuid4()), data=BytesIO(data))
 
     def test_raises_key_exists_when_key_exists(
         self: Self,
-        populated_store: Store[WriteIfNotExists],
+        populated_store_implementing_write_if_not_exists: Store[WriteIfNotExists],
         populated_store_key: str,
     ) -> None:
-        if not isinstance(populated_store._store_backend, WriteIfNotExists):
-            pytest.skip("write_if_not_exists not implemented")
         with pytest.raises(KeyExists):
-            populated_store.write_if_not_exists(key=populated_store_key, data=BytesIO(b""))
+            populated_store_implementing_write_if_not_exists.write_if_not_exists(
+                key=populated_store_key, data=BytesIO(b"")
+            )
