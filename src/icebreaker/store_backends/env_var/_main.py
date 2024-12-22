@@ -77,19 +77,20 @@ class EnvVarStoreBackend:
                 raise KeyExists(key)
             self.write(key, data)
 
-    def _load_store(self) -> dict:
+    def _load_store(self: Self) -> dict[Key, str]:
         try:
             with self._store_backend.read(key=self._var) as data:
-                return self._json_decoder.decode(data.read().decode(self._encoding))
+                all_data: dict[Key, str] = self._json_decoder.decode(data.read().decode(self._encoding))
+                return all_data
         except KeyDoesNotExist:
             return {}
 
-    def _save_store(self, all_data: dict) -> None:
+    def _save_store(self: Self, all_data: dict[Key, str]) -> None:
         encoded_data = self._json_encoder.encode(all_data)
         self._store_backend.write(key=self._var, data=BytesIO(encoded_data.encode(self._encoding)))
 
-    def _encode(self, data: Data) -> str:
+    def _encode(self: Self, data: Data) -> str:
         return b64encode(gzip.compress(data.read())).decode(self._encoding)
 
-    def _decode(self, data: str) -> BytesIO:
+    def _decode(self: Self, data: str) -> BytesIO:
         return BytesIO(gzip.decompress(b64decode(data.encode(self._encoding))))
