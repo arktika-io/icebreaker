@@ -68,8 +68,8 @@ class Store[StoreBackend]:
             ReadTimeout
             PermissionError
         """
-        data = self.read(key=key)
-        return data.read().decode(encoding)
+        with self.read(key=key) as data:
+            return data.read().decode(encoding)
 
     def write(self: Store[Write], key: Key, data: Data) -> None:
         """

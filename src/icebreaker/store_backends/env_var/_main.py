@@ -1,63 +1,78 @@
-from typing import Self
+from typing import ClassVar, Self
 from io import BytesIO
 from collections.abc import MutableMapping
-import json
-from base64 import b64encode
-from base64 import b64decode
 import gzip
+import os
+from base64 import b64encode, b64decode
+from json import JSONEncoder
+from json import JSONDecoder
 
-from icebreaker.store_backends.protocol import KeyDoesNotExist
-from icebreaker.store_backends.protocol import Key
-from icebreaker.store_backends.protocol import Data
+from icebreaker.store_backends.protocol import KeyDoesNotExist, Key, Data
 from icebreaker.store_backends.env_vars import EnvVarsStoreBackend
 
 
+_DEFAULT_JSON_ENCODER: JSONEncoder = JSONEncoder()
+_DEFAULT_JSON_DECODER: JSONDecoder = JSONDecoder()
+
+
 class EnvVarStoreBackend:
+    """
+    Stores data in a single environment variable as a compressed JSON map.
+    """
+
+    _encoding: ClassVar[str] = "utf-8"
+
     _var: str
     _store_backend: EnvVarsStoreBackend
-    _encoding: str = "utf-8"
+    _json_encoder: JSONEncoder
+    _json_decoder: JSONDecoder
 
     def __init__(
         self: Self,
         var: str,
         env_vars: MutableMapping[str, str] | None = None,
+        json_encoder: JSONEncoder = _DEFAULT_JSON_ENCODER,
+        json_decoder: JSONDecoder = _DEFAULT_JSON_DECODER,
     ) -> None:
         self._var = var
-        self._store_backend = EnvVarsStoreBackend(env_vars=env_vars)
+        self._store_backend = EnvVarsStoreBackend(env_vars=env_vars or os.environ)
+        self._json_encoder = json_encoder
+        self._json_decoder = json_decoder
 
     def read(self: Self, key: Key) -> Data:
+        all_data = self._load_store()
         try:
-            data = self._store_backend.read(key=self._var)
-            loaded_data = json.loads(data.read().decode("utf-8"))
-            return self._decode(data=loaded_data[key])
+            encoded_value = all_data[key]
+            return self._decode(encoded_value)
         except KeyError:
             raise KeyDoesNotExist(key)
 
     def write(self: Self, key: Key, data: Data) -> None:
-        try:
-            old_data_file_obj = self._store_backend.read(key=self._var)
-            old_data = old_data_file_obj.read()
-            old_data_decoded = json.loads(old_data.decode("utf-8"))
-        except KeyDoesNotExist:
-            old_data_decoded = {}
-
-        old_data_decoded[key] = self._encode(data=data)
-        old_data_encoded = json.dumps(old_data_decoded).encode("utf-8")
-        self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
+        all_data = self._load_store()
+        all_data[key] = self._encode(data)
+        self._save_store(all_data)
 
     def delete(self: Self, key: Key) -> None:
+        all_data = self._load_store()
         try:
-            old_data_file_obj = self._store_backend.read(key=self._var)
-            old_data = old_data_file_obj.read()
-            old_data_decoded = json.loads(old_data.decode("utf-8"))
-            del old_data_decoded[key]
-            old_data_encoded = json.dumps(old_data_decoded).encode("utf-8")
-            self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
+            del all_data[key]
+            self._save_store(all_data)
         except KeyError:
             raise KeyDoesNotExist(key)
 
-    def _encode(self: Self, data: Data) -> str:
+    def _load_store(self) -> dict:
+        try:
+            with self._store_backend.read(key=self._var) as data:
+                return self._json_decoder.decode(data.read().decode(self._encoding))
+        except KeyDoesNotExist:
+            return {}
+
+    def _save_store(self, all_data: dict) -> None:
+        encoded_data = self._json_encoder.encode(all_data)
+        self._store_backend.write(key=self._var, data=BytesIO(encoded_data.encode(self._encoding)))
+
+    def _encode(self, data: Data) -> str:
         return b64encode(gzip.compress(data.read())).decode(self._encoding)
 
-    def _decode(self: Self, data: str) -> BytesIO:
+    def _decode(self, data: str) -> BytesIO:
         return BytesIO(gzip.decompress(b64decode(data.encode(self._encoding))))

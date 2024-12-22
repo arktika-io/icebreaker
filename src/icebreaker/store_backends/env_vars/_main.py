@@ -1,5 +1,6 @@
 import os
 from typing import Self
+from typing import ClassVar
 from io import BytesIO
 from collections.abc import MutableMapping
 from base64 import b64encode
@@ -12,8 +13,9 @@ from icebreaker.store_backends.protocol import Data
 
 
 class EnvVarsStoreBackend:
+    _encoding: ClassVar[str] = "utf-8"
+
     _env_vars: MutableMapping[str, str]
-    _encoding: str = "utf-8"
 
     def __init__(
         self: Self,
