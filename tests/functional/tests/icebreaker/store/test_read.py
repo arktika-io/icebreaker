@@ -7,7 +7,7 @@ from typing import Self
 
 
 class TestRead:
-    def test_read_works(
+    def test_does_not_crash(
         self: Self,
         populated_store: Store[Read],
         populated_store_key: str,
@@ -16,7 +16,7 @@ class TestRead:
             pytest.skip("read not implemented")
         populated_store.read(key=populated_store_key)
 
-    def test_read_works_as_a_context_manager(
+    def test_does_not_crash_as_a_context_manager(
         self: Self,
         populated_store: Store[Read],
         populated_store_key: str,
@@ -25,7 +25,7 @@ class TestRead:
             assert data.read()
         assert data.closed
 
-    def test_read_raises_key_does_not_exist_when_attempting_to_read_non_existent_key(
+    def test_raises_key_does_not_exist_when_attempting_to_read_non_existent_key(
         self: Self,
         populated_store: Store[Read],
     ) -> None:

@@ -7,7 +7,7 @@ from typing import Self
 
 
 class TestDelete:
-    def test_delete_works(
+    def test_does_not_crash(
         self: Self,
         populated_store: Store[Read],
         populated_store_key: str,
@@ -16,7 +16,7 @@ class TestDelete:
             pytest.skip("delete not implemented")
         populated_store.delete(key=populated_store_key)
 
-    def test_delete_raises_key_does_not_exist_when_attempting_to_delete_non_existent_key(
+    def test_raises_key_does_not_exist_when_attempting_to_delete_non_existent_key(
         self: Self,
         populated_store: Store[Read],
     ) -> None:
