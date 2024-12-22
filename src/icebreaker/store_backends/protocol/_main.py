@@ -42,8 +42,12 @@ class Write(Protocol):
     def write(self: Self, key: Key, data: Data) -> None: ...
 
 
+class WriteIfNotExists(Protocol):
+    def write_if_not_exists(self: Self, key: Key, data: Data) -> None: ...
+
+
 class Delete(Protocol):
     def delete(self: Self, key: Key) -> None: ...
 
 
-StoreBackend: TypeAlias = Read | Write | Delete
+StoreBackend: TypeAlias = Read | Write | WriteIfNotExists | Delete

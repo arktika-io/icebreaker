@@ -14,6 +14,7 @@ from icebreaker.store_backends.protocol import StoreBackendOutOfSpace as StoreBa
 from icebreaker.store_backends.protocol import PermissionError as PermissionError
 from icebreaker.store_backends.protocol import Read as Read
 from icebreaker.store_backends.protocol import Write as Write
+from icebreaker.store_backends.protocol import WriteIfNotExists as WriteIfNotExists
 from icebreaker.store_backends.protocol import Delete as Delete
 from icebreaker.store_backends.protocol import StoreBackend as StoreBackend
 
@@ -31,6 +32,10 @@ class Store[StoreBackend]:
     @property
     def supports_write(self: Self) -> bool:
         return hasattr(self._store_backend, "write")
+
+    @property
+    def supports_write_if_not_exists(self: Self) -> bool:
+        return hasattr(self._store_backend, "write_if_not_exists")
 
     @property
     def supports_delete(self: Self) -> bool:
@@ -87,6 +92,23 @@ class Store[StoreBackend]:
         if not self.supports_write:
             raise NotImplementedError()
         self._store_backend.write(key=key, data=data)
+
+    def write_if_not_exists(self: Store[WriteIfNotExists], key: Key, data: Data) -> None:
+        """
+        Atomically write data to the store at the given key if the key does not already exist.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            ConnectionTimeout
+            Timeout
+            StoreBackendOutOfSpace
+            PermissionError
+            KeyExists
+        """
+        if not self.supports_write_if_not_exists:
+            raise NotImplementedError()
+        self._store_backend.write_if_not_exists(key=key, data=data)
 
     def write_string(
         self: Store[Write],
