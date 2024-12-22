@@ -28,6 +28,13 @@ class EnvVarsStoreBackend:
         self._env_vars = env_vars or os.environ
         self._lock = lock or RLock()
 
+    def delete(self: Self, key: Key) -> None:
+        with self._lock:
+            try:
+                del self._env_vars[key]
+            except KeyError:
+                raise KeyDoesNotExist(key)
+
     def read(self: Self, key: Key) -> Data:
         with self._lock:
             try:
@@ -44,13 +51,6 @@ class EnvVarsStoreBackend:
             if key in self._env_vars:
                 raise KeyExists(key)
             self._env_vars[key] = self._encode(data)
-
-    def delete(self: Self, key: Key) -> None:
-        with self._lock:
-            try:
-                del self._env_vars[key]
-            except KeyError:
-                raise KeyDoesNotExist(key)
 
     def _encode(self: Self, data: Data) -> str:
         return b64encode(gzip.compress(data.read())).decode(self._encoding)

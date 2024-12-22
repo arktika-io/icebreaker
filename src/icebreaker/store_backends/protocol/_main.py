@@ -34,6 +34,10 @@ class StoreBackendOutOfSpace(Exception): ...
 PermissionError = PermissionError
 
 
+class Delete(Protocol):
+    def delete(self: Self, key: Key) -> None: ...
+
+
 class Read(Protocol):
     def read(self: Self, key: Key) -> Data: ...
 
@@ -46,8 +50,4 @@ class WriteIfNotExists(Protocol):
     def write_if_not_exists(self: Self, key: Key, data: Data) -> None: ...
 
 
-class Delete(Protocol):
-    def delete(self: Self, key: Key) -> None: ...
-
-
-StoreBackend: TypeAlias = Read | Write | WriteIfNotExists | Delete
+StoreBackend: TypeAlias = Delete | Read | Write | WriteIfNotExists

@@ -24,6 +24,13 @@ class MemoryStoreBackend:
         self._data_store = data_store or dict()
         self._lock = lock or RLock()
 
+    def delete(self: Self, key: Key) -> None:
+        with self._lock:
+            try:
+                del self._data_store[key]
+            except KeyError:
+                raise KeyDoesNotExist(key)
+
     def read(self: Self, key: Key) -> Data:
         with self._lock:
             try:
@@ -46,10 +53,3 @@ class MemoryStoreBackend:
                 self._data_store[key] = data.read()
             except MemoryError:
                 raise StoreBackendOutOfSpace()
-
-    def delete(self: Self, key: Key) -> None:
-        with self._lock:
-            try:
-                del self._data_store[key]
-            except KeyError:
-                raise KeyDoesNotExist(key)

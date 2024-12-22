@@ -43,6 +43,15 @@ class EnvVarStoreBackend:
         self._json_decoder = json_decoder
         self._lock = lock or RLock()
 
+    def delete(self: Self, key: Key) -> None:
+        with self._lock:
+            all_data = self._load_store()
+            try:
+                del all_data[key]
+                self._save_store(all_data)
+            except KeyError:
+                raise KeyDoesNotExist(key)
+
     def read(self: Self, key: Key) -> Data:
         with self._lock:
             all_data = self._load_store()
@@ -63,15 +72,6 @@ class EnvVarStoreBackend:
             if key in self._load_store():
                 raise KeyExists(key)
             self.write(key, data)
-
-    def delete(self: Self, key: Key) -> None:
-        with self._lock:
-            all_data = self._load_store()
-            try:
-                del all_data[key]
-                self._save_store(all_data)
-            except KeyError:
-                raise KeyDoesNotExist(key)
 
     def _load_store(self) -> dict:
         try:
