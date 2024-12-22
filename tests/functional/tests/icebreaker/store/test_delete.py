@@ -3,6 +3,7 @@ from icebreaker.store import KeyDoesNotExist
 import pytest
 from uuid import uuid4
 from icebreaker.store import Read
+from icebreaker.store import Delete
 from typing import Self
 
 
@@ -12,7 +13,7 @@ class TestDelete:
         populated_store: Store[Read],
         populated_store_key: str,
     ) -> None:
-        if not populated_store.supports_delete:
+        if not isinstance(populated_store._store_backend, Delete):
             pytest.skip("delete not implemented")
         populated_store.delete(key=populated_store_key)
 
@@ -20,7 +21,7 @@ class TestDelete:
         self: Self,
         populated_store: Store[Read],
     ) -> None:
-        if not populated_store.supports_delete:
+        if not isinstance(populated_store._store_backend, Delete):
             pytest.skip("delete not implemented")
         with pytest.raises(KeyDoesNotExist):
             populated_store.delete(key=str(uuid4()))

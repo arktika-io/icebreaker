@@ -12,7 +12,7 @@ class TestRead:
         populated_store: Store[Read],
         populated_store_key: str,
     ) -> None:
-        if not populated_store.supports_read:
+        if not isinstance(populated_store._store_backend, Read):
             pytest.skip("read not implemented")
         populated_store.read(key=populated_store_key)
 
@@ -29,7 +29,7 @@ class TestRead:
         self: Self,
         populated_store: Store[Read],
     ) -> None:
-        if not populated_store.supports_read:
+        if not isinstance(populated_store._store_backend, Read):
             pytest.skip("read not implemented")
 
         with pytest.raises(KeyDoesNotExist):

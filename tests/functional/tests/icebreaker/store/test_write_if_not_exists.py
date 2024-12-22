@@ -20,7 +20,7 @@ class TestWriteIfNotExists:
         store: Store[WriteIfNotExists],
         data: bytes,
     ) -> None:
-        if not store.supports_write_if_not_exists:
+        if not isinstance(store._store_backend, WriteIfNotExists):
             pytest.skip("write_if_not_exists not implemented")
         store.write_if_not_exists(key=str(uuid4()), data=BytesIO(data))
 
@@ -29,7 +29,7 @@ class TestWriteIfNotExists:
         populated_store: Store[WriteIfNotExists],
         populated_store_key: str,
     ) -> None:
-        if not populated_store.supports_write_if_not_exists:
+        if not isinstance(populated_store._store_backend, WriteIfNotExists):
             pytest.skip("write_if_not_exists not implemented")
         with pytest.raises(KeyExists):
             populated_store.write_if_not_exists(key=populated_store_key, data=BytesIO(b""))

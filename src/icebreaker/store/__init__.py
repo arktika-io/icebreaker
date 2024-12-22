@@ -12,3 +12,4 @@ from icebreaker.store._main import Read as Read
 from icebreaker.store._main import Write as Write
 from icebreaker.store._main import WriteIfNotExists as WriteIfNotExists
 from icebreaker.store._main import StoreBackend as StoreBackend
+from icebreaker.store._main import Delete as Delete

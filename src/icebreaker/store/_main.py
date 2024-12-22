@@ -25,26 +25,6 @@ class Store[StoreBackend]:
     def __init__(self: Self, store_backend: StoreBackend) -> None:
         self._store_backend = store_backend
 
-    @property
-    def supports_delete(self: Self) -> bool:
-        return hasattr(self._store_backend, "delete")
-
-    @property
-    def supports_delete_if_exists(self: Self) -> bool:
-        return self.supports_delete
-
-    @property
-    def supports_read(self: Self) -> bool:
-        return hasattr(self._store_backend, "read")
-
-    @property
-    def supports_write(self: Self) -> bool:
-        return hasattr(self._store_backend, "write")
-
-    @property
-    def supports_write_if_not_exists(self: Self) -> bool:
-        return hasattr(self._store_backend, "write_if_not_exists")
-
     def delete(
         self: Store[Delete],
         key: Key,
@@ -91,8 +71,6 @@ class Store[StoreBackend]:
             ReadTimeout
             PermissionError
         """
-        if not self.supports_read:
-            raise NotImplementedError()
         return self._store_backend.read(key=key)
 
     def read_string(
@@ -127,8 +105,6 @@ class Store[StoreBackend]:
             StoreBackendOutOfSpace
             PermissionError
         """
-        if not self.supports_write:
-            raise NotImplementedError()
         self._store_backend.write(key=key, data=data)
 
     def write_if_not_exists(self: Store[WriteIfNotExists], key: Key, data: Data) -> None:
@@ -144,8 +120,6 @@ class Store[StoreBackend]:
             PermissionError
             KeyExists
         """
-        if not self.supports_write_if_not_exists:
-            raise NotImplementedError()
         self._store_backend.write_if_not_exists(key=key, data=data)
 
     def write_string(

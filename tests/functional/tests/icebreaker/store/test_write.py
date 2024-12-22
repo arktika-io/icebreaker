@@ -19,6 +19,6 @@ class TestWrite:
         store: Store[Write],
         data: bytes,
     ) -> None:
-        if not store.supports_write:
+        if not isinstance(store._store_backend, Write):
             pytest.skip("write not implemented")
         store.write(key=str(uuid4()), data=BytesIO(data))
