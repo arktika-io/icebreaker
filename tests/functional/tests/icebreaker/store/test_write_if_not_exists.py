@@ -4,6 +4,7 @@ from uuid import uuid4
 from io import BytesIO
 import pytest
 from icebreaker.store import WriteIfNotExists
+from typing import Self
 
 
 class TestWriteIfNotExists:
@@ -15,7 +16,7 @@ class TestWriteIfNotExists:
         ],
     )
     def test_does_not_crash(
-        self,
+        self: Self,
         store: Store[WriteIfNotExists],
         data: bytes,
     ) -> None:
@@ -24,7 +25,7 @@ class TestWriteIfNotExists:
         store.write_if_not_exists(key=str(uuid4()), data=BytesIO(data))
 
     def test_raises_key_exists_when_key_exists(
-        self,
+        self: Self,
         populated_store: Store[WriteIfNotExists],
         populated_store_key: str,
     ) -> None:

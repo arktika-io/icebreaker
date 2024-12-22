@@ -3,6 +3,7 @@ from icebreaker.store import Write
 from uuid import uuid4
 from io import BytesIO
 import pytest
+from typing import Self
 
 
 class TestWrite:
@@ -14,7 +15,7 @@ class TestWrite:
         ],
     )
     def test_does_not_crash(
-        self,
+        self: Self,
         store: Store[Write],
         data: bytes,
     ) -> None:
