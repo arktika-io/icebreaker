@@ -14,6 +14,15 @@ def test_read_works(
     populated_store.read(key=populated_store_key)
 
 
+def test_read_works_as_a_context_manager(
+    populated_store: Store[Read],
+    populated_store_key: str,
+) -> None:
+    with populated_store.read(key=populated_store_key) as data:
+        assert data.read()
+    assert data.closed
+
+
 def test_read_raises_key_does_not_exist_when_attempting_to_read_non_existent_key(
     populated_store: Store[Read],
 ) -> None:
