@@ -25,17 +25,17 @@ class EnvVarStoreBackend:
         self._var = var
         self._store_backend = EnvVarsStoreBackend(env_vars=env_vars)
 
-    async def read(self: Self, key: Key) -> Data:
+    def read(self: Self, key: Key) -> Data:
         try:
-            data = await self._store_backend.read(key=self._var)
+            data = self._store_backend.read(key=self._var)
             loaded_data = json.loads(data.read().decode("utf-8"))
             return self._decode(data=loaded_data[key])
         except KeyError:
             raise KeyDoesNotExist(key)
 
-    async def write(self: Self, key: Key, data: Data) -> None:
+    def write(self: Self, key: Key, data: Data) -> None:
         try:
-            old_data_file_obj = await self._store_backend.read(key=self._var)
+            old_data_file_obj = self._store_backend.read(key=self._var)
             old_data = old_data_file_obj.read()
             old_data_decoded = json.loads(old_data.decode("utf-8"))
         except KeyDoesNotExist:
@@ -43,16 +43,16 @@ class EnvVarStoreBackend:
 
         old_data_decoded[key] = self._encode(data=data)
         old_data_encoded = json.dumps(old_data_decoded).encode("utf-8")
-        await self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
+        self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
 
-    async def delete(self: Self, key: Key) -> None:
+    def delete(self: Self, key: Key) -> None:
         try:
-            old_data_file_obj = await self._store_backend.read(key=self._var)
+            old_data_file_obj = self._store_backend.read(key=self._var)
             old_data = old_data_file_obj.read()
             old_data_decoded = json.loads(old_data.decode("utf-8"))
             del old_data_decoded[key]
             old_data_encoded = json.dumps(old_data_decoded).encode("utf-8")
-            await self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
+            self._store_backend.write(key=self._var, data=BytesIO(old_data_encoded))
         except KeyError:
             raise KeyDoesNotExist(key)
 

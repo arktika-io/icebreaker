@@ -21,16 +21,16 @@ class EnvVarsStoreBackend:
     ) -> None:
         self._env_vars = env_vars or os.environ
 
-    async def read(self: Self, key: Key) -> Data:
+    def read(self: Self, key: Key) -> Data:
         try:
             return self._decode(self._env_vars[key])
         except KeyError:
             raise KeyDoesNotExist(key)
 
-    async def write(self: Self, key: Key, data: Data) -> None:
+    def write(self: Self, key: Key, data: Data) -> None:
         self._env_vars[key] = self._encode(data)
 
-    async def delete(self: Self, key: Key) -> None:
+    def delete(self: Self, key: Key) -> None:
         try:
             del self._env_vars[key]
         except KeyError:

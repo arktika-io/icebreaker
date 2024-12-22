@@ -34,9 +34,9 @@ def populated_store_key() -> str:
 
 
 @pytest.fixture(scope="function")
-async def populated_store(
+def populated_store(
     store: Store[Write],
     populated_store_key: str,
 ) -> Store[StoreBackend]:
-    await store.write_string(key=populated_store_key, data="test")
+    store.write_string(key=populated_store_key, data="test")
     return store

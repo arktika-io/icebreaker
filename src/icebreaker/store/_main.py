@@ -36,7 +36,7 @@ class Store[StoreBackend]:
     def supports_delete(self: Self) -> bool:
         return hasattr(self._store_backend, "delete")
 
-    async def read(self: Store[Read], key: Key) -> Data:
+    def read(self: Store[Read], key: Key) -> Data:
         """
         Read data from the store at the given key.
 
@@ -50,9 +50,9 @@ class Store[StoreBackend]:
         """
         if not self.supports_read:
             raise NotImplementedError()
-        return await self._store_backend.read(key=key)
+        return self._store_backend.read(key=key)
 
-    async def read_string(
+    def read_string(
         self: Store[Read],
         key: Key,
         encoding: str = "utf-8",
@@ -68,10 +68,10 @@ class Store[StoreBackend]:
             ReadTimeout
             PermissionError
         """
-        data = await self.read(key=key)
+        data = self.read(key=key)
         return data.read().decode(encoding)
 
-    async def write(self: Store[Write], key: Key, data: Data) -> None:
+    def write(self: Store[Write], key: Key, data: Data) -> None:
         """
         Write data to the store at the given key.
         If the key already exists, the existing data will be overwritten.
@@ -86,9 +86,9 @@ class Store[StoreBackend]:
         """
         if not self.supports_write:
             raise NotImplementedError()
-        await self._store_backend.write(key=key, data=data)
+        self._store_backend.write(key=key, data=data)
 
-    async def write_string(
+    def write_string(
         self: Store[Write],
         key: Key,
         data: str,
@@ -106,9 +106,9 @@ class Store[StoreBackend]:
             StoreBackendOutOfSpace
             PermissionError
         """
-        await self.write(key=key, data=BytesIO(data.encode(encoding)))
+        self.write(key=key, data=BytesIO(data.encode(encoding)))
 
-    async def delete(
+    def delete(
         self: Store[Delete],
         key: Key,
     ) -> None:
@@ -122,4 +122,4 @@ class Store[StoreBackend]:
             ConnectionTimeout
             PermissionError
         """
-        await self._store_backend.delete(key=key)
+        self._store_backend.delete(key=key)

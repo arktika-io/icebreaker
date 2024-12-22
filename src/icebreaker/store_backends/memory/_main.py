@@ -19,19 +19,19 @@ class MemoryStoreBackend:
     ) -> None:
         self._data_store = data_store or dict()
 
-    async def read(self: Self, key: Key) -> Data:
+    def read(self: Self, key: Key) -> Data:
         try:
             return BytesIO(self._data_store[key])
         except KeyError:
             raise KeyDoesNotExist(key)
 
-    async def write(self: Self, key: Key, data: Data) -> None:
+    def write(self: Self, key: Key, data: Data) -> None:
         try:
             self._data_store[key] = data.read()
         except MemoryError:
             raise StoreBackendOutOfSpace()
 
-    async def delete(self: Self, key: Key) -> None:
+    def delete(self: Self, key: Key) -> None:
         try:
             del self._data_store[key]
         except KeyError:
