@@ -36,6 +36,22 @@ PermissionError = PermissionError
 
 
 @runtime_checkable
+class Append(Protocol):
+    def append(self: Self, key: Key, data: Data) -> None:
+        """
+        Append data to the existing data at the given key.
+        If the key does not exist, the data will be written at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyDoesNotExist
+            ConnectionTimeout
+            PermissionError
+        """
+
+
+@runtime_checkable
 class Delete(Protocol):
     def delete(self: Self, key: Key) -> None:
         """
@@ -94,4 +110,4 @@ class WriteIfNotExists(Protocol):
         """
 
 
-StoreBackend: TypeAlias = Delete | Read | Write | WriteIfNotExists
+StoreBackend: TypeAlias = Append | Delete | Read | Write | WriteIfNotExists

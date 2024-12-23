@@ -1,3 +1,4 @@
+from icebreaker.store._main import Append as Append
 from icebreaker.store._main import Data as Data
 from icebreaker.store._main import Delete as Delete
 from icebreaker.store._main import InvalidKey as InvalidKey

@@ -1,3 +1,4 @@
+from icebreaker.store_backends.protocol._main import Append as Append
 from icebreaker.store_backends.protocol._main import Data as Data
 from icebreaker.store_backends.protocol._main import Delete as Delete
 from icebreaker.store_backends.protocol._main import InvalidKey as InvalidKey

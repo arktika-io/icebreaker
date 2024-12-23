@@ -3,6 +3,7 @@ from __future__ import annotations
 from io import BytesIO
 from typing import Self
 
+from icebreaker.store_backends.protocol import Append as Append
 from icebreaker.store_backends.protocol import Data as Data
 from icebreaker.store_backends.protocol import Delete as Delete
 from icebreaker.store_backends.protocol import InvalidKey as InvalidKey
@@ -24,6 +25,20 @@ class Store[StoreBackend]:
 
     def __init__(self: Self, store_backend: StoreBackend) -> None:
         self._store_backend = store_backend
+
+    def append(self: Store[Append], key: Key, data: Data) -> None:
+        """
+        Append data to the existing data at the given key.
+        If the key does not exist, the data will be written at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyDoesNotExist
+            ConnectionTimeout
+            PermissionError
+        """
+        self._store_backend.append(key=key, data=data)
 
     def delete(
         self: Store[Delete],

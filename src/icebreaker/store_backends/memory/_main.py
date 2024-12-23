@@ -24,6 +24,15 @@ class MemoryStoreBackend:
         self._data_store = data_store or dict()
         self._lock = lock or RLock()
 
+    def append(self: Self, key: Key, data: Data) -> None:
+        with self._lock:
+            try:
+                existing_data = self.read(key=key)
+            except KeyDoesNotExist:
+                existing_data = BytesIO(b"")
+            new_data = BytesIO(existing_data.read() + data.read())
+            self.write(key=key, data=new_data)
+
     def delete(self: Self, key: Key) -> None:
         with self._lock:
             try:
