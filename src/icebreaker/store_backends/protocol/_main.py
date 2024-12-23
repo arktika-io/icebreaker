@@ -37,22 +37,61 @@ PermissionError = PermissionError
 
 @runtime_checkable
 class Delete(Protocol):
-    def delete(self: Self, key: Key) -> None: ...
+    def delete(self: Self, key: Key) -> None:
+        """
+        Delete the data at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyDoesNotExist
+            ConnectionTimeout
+            PermissionError
+        """
 
 
 @runtime_checkable
 class Read(Protocol):
-    def read(self: Self, key: Key) -> Data: ...
+    def read(self: Self, key: Key) -> Data:
+        """
+        Read data from the store at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyDoesNotExist
+            ConnectionTimeout
+            PermissionError
+        """
 
 
 @runtime_checkable
 class Write(Protocol):
-    def write(self: Self, key: Key, data: Data) -> None: ...
+    def write(self: Self, key: Key, data: Data) -> None:
+        """
+        Write data to the store at the given key.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            ConnectionTimeout
+            PermissionError
+        """
 
 
 @runtime_checkable
 class WriteIfNotExists(Protocol):
-    def write_if_not_exists(self: Self, key: Key, data: Data) -> None: ...
+    def write_if_not_exists(self: Self, key: Key, data: Data) -> None:
+        """
+        Write data to the store at the given key if the key does not already exist.
+
+        Raises:
+            StoreBackendDoesNotExist
+            InvalidKey
+            KeyExists
+            ConnectionTimeout
+            PermissionError
+        """
 
 
 StoreBackend: TypeAlias = Delete | Read | Write | WriteIfNotExists
