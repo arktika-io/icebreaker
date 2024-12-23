@@ -7,9 +7,11 @@ import pytest
 from icebreaker.store import KeyExists
 from icebreaker.store import Store
 from icebreaker.store import WriteIfNotExists
+from tests.functional.decorators import skip_on_not_implemented_error
 
 
 class TestWriteIfNotExists:
+    @skip_on_not_implemented_error
     @pytest.mark.parametrize(
         "data",
         [
@@ -19,17 +21,16 @@ class TestWriteIfNotExists:
     )
     def test_does_not_crash(
         self: Self,
-        store_implementing_write_if_not_exists: Store[WriteIfNotExists],
+        store: Store[WriteIfNotExists],
         data: bytes,
     ) -> None:
-        store_implementing_write_if_not_exists.write_if_not_exists(key=str(uuid4()), data=BytesIO(data))
+        store.write_if_not_exists(key=str(uuid4()), data=BytesIO(data))
 
+    @skip_on_not_implemented_error
     def test_raises_key_exists_when_key_exists(
         self: Self,
-        populated_store_implementing_write_if_not_exists: Store[WriteIfNotExists],
+        populated_store: Store[WriteIfNotExists],
         populated_store_key: str,
     ) -> None:
         with pytest.raises(KeyExists):
-            populated_store_implementing_write_if_not_exists.write_if_not_exists(
-                key=populated_store_key, data=BytesIO(b"")
-            )
+            populated_store.write_if_not_exists(key=populated_store_key, data=BytesIO(b""))

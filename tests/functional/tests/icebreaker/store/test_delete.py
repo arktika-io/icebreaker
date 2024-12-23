@@ -6,19 +6,22 @@ import pytest
 from icebreaker.store import Delete
 from icebreaker.store import KeyDoesNotExist
 from icebreaker.store import Store
+from tests.functional.decorators import skip_on_not_implemented_error
 
 
 class TestDelete:
+    @skip_on_not_implemented_error
     def test_does_not_crash(
         self: Self,
-        populated_store_implementing_delete: Store[Delete],
+        populated_store: Store[Delete],
         populated_store_key: str,
     ) -> None:
-        populated_store_implementing_delete.delete(key=populated_store_key)
+        populated_store.delete(key=populated_store_key)
 
+    @skip_on_not_implemented_error
     def test_raises_key_does_not_exist_when_attempting_to_delete_non_existent_key(
         self: Self,
-        store_implementing_delete: Store[Delete],
+        store: Store[Delete],
     ) -> None:
         with pytest.raises(KeyDoesNotExist):
-            store_implementing_delete.delete(key=str(uuid4()))
+            store.delete(key=str(uuid4()))

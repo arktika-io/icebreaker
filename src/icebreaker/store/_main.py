@@ -38,6 +38,8 @@ class Store[StoreBackend]:
             ConnectionTimeout
             PermissionError
         """
+        if not hasattr(self._store_backend, "append"):
+            raise NotImplementedError("The store backend does not support append.")
         self._store_backend.append(key=key, data=data)
 
     def delete(
@@ -54,6 +56,8 @@ class Store[StoreBackend]:
             ConnectionTimeout
             PermissionError
         """
+        if not hasattr(self._store_backend, "delete"):
+            raise NotImplementedError("The store backend does not support delete.")
         self._store_backend.delete(key=key)
 
     def delete_if_exists(
@@ -86,6 +90,8 @@ class Store[StoreBackend]:
             ReadTimeout
             PermissionError
         """
+        if not hasattr(self._store_backend, "read"):
+            raise NotImplementedError("The store backend does not support read.")
         return self._store_backend.read(key=key)
 
     def read_string(
@@ -120,6 +126,8 @@ class Store[StoreBackend]:
             StoreBackendOutOfSpace
             PermissionError
         """
+        if not hasattr(self._store_backend, "write"):
+            raise NotImplementedError("The store backend does not support write.")
         self._store_backend.write(key=key, data=data)
 
     def write_if_not_exists(self: Store[WriteIfNotExists], key: Key, data: Data) -> None:
@@ -135,6 +143,8 @@ class Store[StoreBackend]:
             PermissionError
             KeyExists
         """
+        if not hasattr(self._store_backend, "write_if_not_exists"):
+            raise NotImplementedError("The store backend does not support write_if_not_exists.")
         self._store_backend.write_if_not_exists(key=key, data=data)
 
     def write_string(

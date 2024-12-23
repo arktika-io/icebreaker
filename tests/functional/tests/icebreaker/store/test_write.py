@@ -6,9 +6,11 @@ import pytest
 
 from icebreaker.store import Store
 from icebreaker.store import Write
+from tests.functional.decorators import skip_on_not_implemented_error
 
 
 class TestWrite:
+    @skip_on_not_implemented_error
     @pytest.mark.parametrize(
         "data",
         [
@@ -18,7 +20,7 @@ class TestWrite:
     )
     def test_does_not_crash(
         self: Self,
-        store_implementing_write: Store[Write],
+        store: Store[Write],
         data: bytes,
     ) -> None:
-        store_implementing_write.write(key=str(uuid4()), data=BytesIO(data))
+        store.write(key=str(uuid4()), data=BytesIO(data))
