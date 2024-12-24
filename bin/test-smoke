@@ -5,4 +5,4 @@ set -euo pipefail
 PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 
 source "${PROJECT}/bin/env"
-pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp "${PROJECT}/.test_artifacts" --asyncio-mode auto "${PROJECT}/tests/smoke"
+pytest -vv -ra --strict-markers --strict-config --durations 10 --new-first --basetemp "${PROJECT}/.test_artifacts" "${PROJECT}/tests/smoke"
