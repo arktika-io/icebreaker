@@ -1,4 +1,4 @@
-from pathlib import Path as Path
+from pathlib import PurePosixPath
 from typing import BinaryIO
 from typing import Protocol
 from typing import Self
@@ -6,6 +6,7 @@ from typing import TypeAlias
 from typing import runtime_checkable
 
 Data: TypeAlias = BinaryIO
+Path = PurePosixPath
 
 
 class StoreBackendDoesNotExist(Exception): ...
