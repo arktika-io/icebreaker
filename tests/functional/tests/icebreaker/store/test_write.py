@@ -4,6 +4,7 @@ from uuid import uuid4
 
 import pytest
 
+from icebreaker.store import Path
 from icebreaker.store import Store
 from icebreaker.store import Write
 from tests.functional.decorators import skip_on_not_implemented_error
@@ -23,4 +24,4 @@ class TestWrite:
         store: Store[Write],
         data: bytes,
     ) -> None:
-        store.write(key=str(uuid4()), data=BytesIO(data))
+        store.write(path=Path(str(uuid4())), data=BytesIO(data))

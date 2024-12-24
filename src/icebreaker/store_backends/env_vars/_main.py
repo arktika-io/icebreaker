@@ -9,9 +9,9 @@ from typing import ClassVar
 from typing import Self
 
 from icebreaker.store_backends.protocol import Data
-from icebreaker.store_backends.protocol import Key
-from icebreaker.store_backends.protocol import KeyDoesNotExist
-from icebreaker.store_backends.protocol import KeyExists
+from icebreaker.store_backends.protocol import Path
+from icebreaker.store_backends.protocol import PathDoesNotExist
+from icebreaker.store_backends.protocol import PathExists
 
 
 class EnvVarsStoreBackend:
@@ -28,38 +28,38 @@ class EnvVarsStoreBackend:
         self._env_vars = env_vars or os.environ
         self._lock = lock or RLock()
 
-    def append(self: Self, key: Key, data: Data) -> None:
+    def append(self: Self, path: Path, data: Data) -> None:
         with self._lock:
             try:
-                existing_data = self.read(key=key)
-            except KeyDoesNotExist:
+                existing_data = self.read(path=path)
+            except PathDoesNotExist:
                 existing_data = BytesIO(b"")
             new_data = BytesIO(existing_data.read() + data.read())
-            self.write(key=key, data=new_data)
+            self.write(path=path, data=new_data)
 
-    def delete(self: Self, key: Key) -> None:
+    def delete(self: Self, path: Path) -> None:
         with self._lock:
             try:
-                del self._env_vars[key]
+                del self._env_vars[str(path)]
             except KeyError:
-                raise KeyDoesNotExist(key)
+                raise PathDoesNotExist()
 
-    def read(self: Self, key: Key) -> Data:
+    def read(self: Self, path: Path) -> Data:
         with self._lock:
             try:
-                return self._decode(self._env_vars[key])
+                return self._decode(self._env_vars[str(path)])
             except KeyError:
-                raise KeyDoesNotExist(key)
+                raise PathDoesNotExist()
 
-    def write(self: Self, key: Key, data: Data) -> None:
+    def write(self: Self, path: Path, data: Data) -> None:
         with self._lock:
-            self._env_vars[key] = self._encode(data)
+            self._env_vars[str(path)] = self._encode(data)
 
-    def write_if_not_exists(self: Self, key: Key, data: Data) -> None:
+    def write_if_not_exists(self: Self, path: Path, data: Data) -> None:
         with self._lock:
-            if key in self._env_vars:
-                raise KeyExists(key)
-            self._env_vars[key] = self._encode(data)
+            if str(path) in self._env_vars:
+                raise PathExists(path)
+            self._env_vars[str(path)] = self._encode(data)
 
     def _encode(self: Self, data: Data) -> str:
         return b64encode(gzip.compress(data.read())).decode(self._encoding)

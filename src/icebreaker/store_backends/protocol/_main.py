@@ -1,23 +1,20 @@
+from pathlib import Path as Path
 from typing import BinaryIO
 from typing import Protocol
 from typing import Self
 from typing import TypeAlias
 from typing import runtime_checkable
 
-Key = str
 Data: TypeAlias = BinaryIO
 
 
 class StoreBackendDoesNotExist(Exception): ...
 
 
-class InvalidKey(Exception): ...
+class PathDoesNotExist(Exception): ...
 
 
-class KeyDoesNotExist(Exception): ...
-
-
-class KeyExists(Exception): ...
+class PathExists(Exception): ...
 
 
 class Timeout(Exception): ...
@@ -37,15 +34,14 @@ PermissionError = PermissionError
 
 @runtime_checkable
 class Append(Protocol):
-    def append(self: Self, key: Key, data: Data) -> None:
+    def append(self: Self, path: Path, data: Data) -> None:
         """
-        Append data to the existing data at the given key.
-        If the key does not exist, the data will be written at the given key.
+        Append data to the existing data at the given path.
+        If the path does not exist, the data will be written at the given path.
 
         Raises:
             StoreBackendDoesNotExist
-            InvalidKey
-            KeyDoesNotExist
+            PathDoesNotExist
             ConnectionTimeout
             PermissionError
         """
@@ -53,14 +49,13 @@ class Append(Protocol):
 
 @runtime_checkable
 class Delete(Protocol):
-    def delete(self: Self, key: Key) -> None:
+    def delete(self: Self, path: Path) -> None:
         """
-        Delete the data at the given key.
+        Delete the data at the given path.
 
         Raises:
             StoreBackendDoesNotExist
-            InvalidKey
-            KeyDoesNotExist
+            PathDoesNotExist
             ConnectionTimeout
             PermissionError
         """
@@ -68,14 +63,13 @@ class Delete(Protocol):
 
 @runtime_checkable
 class Read(Protocol):
-    def read(self: Self, key: Key) -> Data:
+    def read(self: Self, path: Path) -> Data:
         """
-        Read data from the store at the given key.
+        Read data from the store at the given path.
 
         Raises:
             StoreBackendDoesNotExist
-            InvalidKey
-            KeyDoesNotExist
+            PathDoesNotExist
             ConnectionTimeout
             PermissionError
         """
@@ -83,13 +77,12 @@ class Read(Protocol):
 
 @runtime_checkable
 class Write(Protocol):
-    def write(self: Self, key: Key, data: Data) -> None:
+    def write(self: Self, path: Path, data: Data) -> None:
         """
-        Write data to the store at the given key.
+        Write data to the store at the given path.
 
         Raises:
             StoreBackendDoesNotExist
-            InvalidKey
             ConnectionTimeout
             PermissionError
         """
@@ -97,14 +90,13 @@ class Write(Protocol):
 
 @runtime_checkable
 class WriteIfNotExists(Protocol):
-    def write_if_not_exists(self: Self, key: Key, data: Data) -> None:
+    def write_if_not_exists(self: Self, path: Path, data: Data) -> None:
         """
-        Write data to the store at the given key if the key does not already exist.
+        Write data to the store at the given path if the path does not already exist.
 
         Raises:
             StoreBackendDoesNotExist
-            InvalidKey
-            KeyExists
+            PathExists
             ConnectionTimeout
             PermissionError
         """

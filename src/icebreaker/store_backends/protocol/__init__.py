@@ -1,10 +1,9 @@
 from icebreaker.store_backends.protocol._main import Append as Append
 from icebreaker.store_backends.protocol._main import Data as Data
 from icebreaker.store_backends.protocol._main import Delete as Delete
-from icebreaker.store_backends.protocol._main import InvalidKey as InvalidKey
-from icebreaker.store_backends.protocol._main import Key as Key
-from icebreaker.store_backends.protocol._main import KeyDoesNotExist as KeyDoesNotExist
-from icebreaker.store_backends.protocol._main import KeyExists as KeyExists
+from icebreaker.store_backends.protocol._main import Path as Path
+from icebreaker.store_backends.protocol._main import PathDoesNotExist as PathDoesNotExist
+from icebreaker.store_backends.protocol._main import PathExists as PathExists
 from icebreaker.store_backends.protocol._main import PermissionError as PermissionError
 from icebreaker.store_backends.protocol._main import Read as Read
 from icebreaker.store_backends.protocol._main import StoreBackend as StoreBackend
