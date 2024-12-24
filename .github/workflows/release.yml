@@ -23,6 +23,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
       - run: ./bin/setup
       - run: ./bin/package-${{ matrix.packages.package }}
       - run: ./bin/publish-${{ matrix.packages.package }}

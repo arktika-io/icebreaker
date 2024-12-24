@@ -33,5 +33,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: Homebrew/actions/setup-homebrew@master
       - run: ./bin/setup
       - run: ./bin/test-${{ matrix.test-type }}
