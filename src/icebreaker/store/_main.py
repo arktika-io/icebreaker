@@ -40,6 +40,24 @@ class Store[StoreBackend]:
             raise NotImplementedError("The store backend does not support append.")
         self._store_backend.append(path=path, data=data)
 
+    def copy(
+        from_store: Store[Read],
+        to_store: Store[Write],
+        from_path: Path,
+        to_path: Path,
+    ) -> None:
+        """
+        Copy data between stores.
+
+        Raises:
+            StoreBackendDoesNotExist
+            PathDoesNotExist
+            ConnectionTimeout
+            PermissionError
+        """
+        with from_store.read(path=from_path) as data:
+            to_store.write(path=to_path, data=data)
+
     def delete(
         self: Store[Delete],
         path: Path,
