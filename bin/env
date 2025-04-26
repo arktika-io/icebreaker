@@ -6,9 +6,8 @@ PYTHON_ENV_DIR="${ENV_DIR}/python"
 
 cd "${PROJECT}" || return 1
 
-if [ ! -d "${ENV_DIR}" ]; then
-    echo "Error: Environment not setup. Did you run bin/setup?"
-    return 1
+if [ ! -d "${PYTHON_ENV_DIR}" ]; then
+    "${PROJECT}/bin/setup"
 fi
 
 if [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "win32" ]]; then
@@ -18,5 +17,6 @@ else
 fi
 
 if [[ ${0} == "${BASH_SOURCE}" ]]; then
+    # Execute passed command, if we're not being sourced.
     "$@"
 fi

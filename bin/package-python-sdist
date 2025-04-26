@@ -5,7 +5,6 @@ set -euo pipefail
 PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 DIST_DIR="${PROJECT}/dist"
 
-
 source "${PROJECT}/bin/env"
 
 rm -rf "${DIST_DIR}"

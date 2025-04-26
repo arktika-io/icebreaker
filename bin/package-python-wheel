@@ -6,7 +6,6 @@ PROJECT="$(dirname "$(dirname "$(realpath "${0}")")")"
 BUILD_DIR="${PROJECT}/build"
 DIST_DIR="${PROJECT}/dist"
 
-
 source "${PROJECT}/bin/env"
 
 rm -rf "${BUILD_DIR}"
